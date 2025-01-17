@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.entities.*;
+import org.example.utils.EncryptionUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -38,7 +39,14 @@ public class Main {
                     // Create a Note with encrypted content
                     Note note = new Note();
                     note.setTitle("Project Plan");
-                    note.setEncryptedContent(encryptContent("This is the project plan..."));
+
+                    // Encrypt the content using EncryptionUtil
+                    String encryptedContent = encryptContent("This is the project plan...");
+                    if (encryptedContent == null) {
+                        throw new RuntimeException("Failed to encrypt content.");
+                    }
+                    note.setEncryptedContent(encryptedContent);
+
                     note.setCreatedDate(LocalDateTime.now());
                     note.setOwner(user);
                     note.setFolder(folder);
@@ -76,9 +84,15 @@ public class Main {
         }
     }
 
-    // Placeholder method for content encryption
+    // Encrypt content using EncryptionUtil
     private static String encryptContent(String content) {
-        // Implement your encryption logic here
-        return content; // Replace with encrypted content
+        try {
+            // Use EncryptionUtil to encrypt the content
+            return EncryptionUtil.encrypt(content);
+        } catch (Exception e) {
+            System.err.println("Failed to encrypt content:");
+            e.printStackTrace();
+            return null; // Return null if encryption fails
+        }
     }
 }
