@@ -1,0 +1,372 @@
+/* Global Styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #1f2123;
+    color: white;
+    display: flex;
+    flex-direction: column; /* Arrange content vertically */
+    min-height: 100vh; /* Ensure the body takes the full height of the viewport */
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #72afea; /* Change the color on hover */
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    margin: 0 20px; /* Reduce margin for smaller screens */
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.logo img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+/* Adjust the navigation bar (three dots) in small screens */
+.nav {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent links from wrapping */
+    align-items: center;
+    position: relative; /* To ensure dropdown toggle aligns properly */
+}
+.nav a {
+    margin-left: 20px;
+    font-size: 14px;
+    border-color: #72afea;
+    transition: border-bottom 0.3s ease;
+}
+
+.nav a:hover {
+    border-bottom: 2px #72afea; /* Add underline effect on hover */
+}
+
+.nav .signup-btn {
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: transparent;
+    border: 2px solid #72afea;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav .signup-btn:hover {
+    background-color: #72afea;
+    color: #1f2123;
+}
+
+/* Main Content */
+.main {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.main h1 {
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.main h1 span {
+    font-size: 76px; /* Make the "S" larger */
+    color: #3c90dd; /* Optional: Add a color to the "S" for emphasis */
+}
+
+.main p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.main .cta-btn {
+    background-color: #3c90dd;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white; /* Ensure the font color is white */
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.main .cta-btn:hover {
+    background-color: #3278ba; /* Slightly darker blue */
+    color: white;
+}
+
+/* Footer */
+footer {
+    margin-top: auto; /* Push the footer to the bottom */
+    padding: 25px;
+    text-align: center;
+    background-color: #1a1a1a;
+    color: #aaa;
+    font-size: 14px;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 1024px) {
+    .header {
+        padding: 20px;
+        margin: 0 10px; /* Reduce side margins */
+    }
+    .logo {
+        font-size: 20px;
+    }
+    .nav a {
+        font-size: 12px;
+        margin-left: 10px;
+    }
+    .nav .signup-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    .main h1 {
+        font-size: 40px;
+    }
+    .main h1 span {
+        font-size: 60px;
+    }
+    .main p {
+        font-size: 16px;
+    }
+    .main .cta-btn {
+        font-size: 14px;
+        padding: 10px 16px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .header {
+        flex-direction: column; /* Stack header items vertically */
+        align-items: flex-start;
+    }
+    .nav {
+        display: flex;
+        flex-wrap: wrap; /* Wrap navigation links to the next line */
+    }
+    .main h1 {
+        font-size: 32px;
+    }
+    .main h1 span {
+        font-size: 48px;
+    }
+    .main p {
+        font-size: 14px;
+    }
+    .main .cta-btn {
+        font-size: 12px;
+        padding: 8px 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .header {
+        padding: 10px;
+    }
+    .nav a {
+        font-size: 10px;
+        margin-left: 5px;
+    }
+    .nav .signup-btn {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+    .main h1 {
+        font-size: 28px;
+    }
+    .main h1 span {
+        font-size: 36px;
+    }
+    .main p {
+        font-size: 12px;
+    }
+    .main .cta-btn {
+        font-size: 10px;
+        padding: 6px 10px;
+    }
+}
+/* Menu Icon (Hidden by default on larger screens) */
+.menu-icon {
+    display: none; /* Hidden by default on larger screens */
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    position: absolute; /* Position relative to the parent container */
+    right: 20px; /* Adjust position to align with the right edge */
+    top: 20px; /* Align vertically with the header */
+}
+
+/* Dropdown Menu (Hidden by default) */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background-color: #1a1a1a;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    flex-direction: column;
+}
+
+.dropdown-menu a,
+.dropdown-menu .signup-btn {
+    margin: 5px 0;
+    display: block;
+    font-size: 14px;
+    text-align: left;
+}
+
+/* Responsive: Show Menu Icon */
+@media screen and (max-width: 768px) {
+    .nav {
+        display: none; /* Hide the navigation links */
+    }
+    .menu-icon {
+        display: block; /* Show the 3-dotted menu icon */
+    }
+    .dropdown-menu {
+        display: flex; /* Show dropdown menu when toggled */
+    }
+}
+/* Add toggle menu (three dots) styles */
+.nav .menu-toggle {
+    display: none; /* Hidden by default */
+    font-size: 24px;
+    cursor: pointer;
+    position: absolute;
+    right: 0; /* Keep it aligned to the right */
+    color: white;
+    background: transparent;
+    border: none;
+}
+
+/* When the screen width is small, show the menu toggle */
+@media screen and (max-width: 768px) {
+    .nav {
+        flex-direction: column; /* Stack links vertically */
+        display: none; /* Initially hidden */
+        width: 100%; /* Take full width */
+        position: absolute; /* Position dropdown below header */
+        top: 70px; /* Adjust according to header height */
+        right: 0; /* Align dropdown to the right */
+        background-color: #1f2123; /* Match header background */
+        z-index: 100; /* Make sure it appears above other elements */
+    }
+
+    .nav.show {
+        display: flex; /* Show when toggle is clicked */
+    }
+
+    .nav a {
+        margin: 10px 0; /* Space out vertically */
+    }
+
+    .menu-toggle {
+        display: block; /* Show the toggle */
+    }
+}
+/* Add styles for the large image */
+.main img {
+    width: 100%; /* Make the image occupy full width */
+    max-width: 125%; /* Limit the maximum width */
+    height: auto; /* Maintain aspect ratio */
+    margin: 20px auto; /* Center the image with top/bottom margin */
+    display: block; /* Center the image horizontally */
+    border-radius: 10px; /* Optional: Add rounded corners for better aesthetics */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow effect */
+}
+
+/* Media queries for responsive behavior */
+@media screen and (max-width: 768px) {
+    .main img {
+        max-width: 110%; /* Reduce image size on medium screens */
+        margin: 10px auto; /* Adjust margin for medium screens */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .main img {
+        max-width: 105%; /* Let the image occupy full width on small screens */
+        margin: 10px auto; /* Adjust margin for smaller screens */
+        border-radius: 5px; /* Slightly reduce border radius */
+    }
+}
+
+/*Features*/
+.feature{
+    height: auto;
+}
+.features-section {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.features-section h1 {
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
+.features-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature {
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #3c3c3c;
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.feature h2 {
+    margin: 15px 0 10px;
+    color: #ffffff;
+}
+
+.feature p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #cccccc;
+}
+
+.feature-img {
+    width: 10px; /* Adjust the size as needed */
+    height: 10px;
+    margin:0 auto;
+    object-fit: contain; /* Ensures the image scales nicely */
+    transform: scale(0.5); /* Scale the image to 80% of its size */
+}
+.feature-box {
+    text-align: center;
+    padding: 10px; /* Reduce padding inside the container */
+    margin: 0 auto;
+}
