@@ -370,3 +370,381 @@ footer {
     padding: 10px; /* Reduce padding inside the container */
     margin: 0 auto;
 }
+
+/* Signup Section */
+.signup-container {
+    text-align: center;
+    background-color: #292b2e42; /* Dark background to match the theme */
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+}
+
+.signup-container .logo img {
+    width: 120px; /* Slightly larger logo */
+    height: 120px;
+    margin: auto;
+}
+
+.signup-container h1 {
+    font-size: 28px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.signup-container form {
+    margin-bottom: 20px;
+}
+
+.signup-container input[type="email"] {
+    width: 100%; /* Adjusted width to account for padding */
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #1f2123; /* Dark background for input fields */
+    color: white;
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+}
+
+.signup-container input[type="email"]::placeholder {
+    color: #888; /* Placeholder text color */
+}
+
+.signup-container input[type="email"]:focus {
+    outline: none;
+    border-color: #72afea;
+    box-shadow: 0 0 5px rgba(114, 175, 234, 0.5);
+}
+/* Password input field */
+.signup-container input[type="password"] {
+    width: 100%; /* Same width as email field */
+    padding: 12px;
+    margin-bottom: 20px; /* Same margin as email field */
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #1f2123; /* Dark background for input fields */
+    color: white;
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+}
+
+.signup-container input[type="password"]::placeholder {
+    color: #888; /* Placeholder text color */
+}
+
+.signup-container input[type="password"]:focus {
+    outline: none;
+    border-color: #72afea;
+    box-shadow: 0 0 5px rgba(114, 175, 234, 0.5);
+}
+.signup-container input[type="text"] {
+    width: 100%; /* Same width as email field */
+    padding: 12px;
+    margin-bottom: 20px; /* Same margin as email field */
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #1f2123; /* Dark background for input fields */
+    color: white;
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+}
+
+.signup-container input[type="text"]::placeholder {
+    color: #888; /* Placeholder text color */
+}
+
+.signup-container input[type="text"]:focus {
+    outline: none;
+    border-color: #72afea;
+    box-shadow: 0 0 5px rgba(114, 175, 234, 0.5);
+}
+.signup-container .signup-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #3c90dd;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.signup-container .signup-button:hover {
+    background-color: #3278ba;
+    box-shadow: 0 4px 8px rgba(50, 120, 186, 0.4);
+}
+
+.signup-container p {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+.signup-container .terms-link,
+.signup-container .login-link {
+    color: #72afea;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.signup-container .terms-link:hover,
+.signup-container .login-link:hover {
+    text-decoration: underline;
+    color: #9dc7f4;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+    .signup-container {
+        padding: 30px;
+    }
+
+    .signup-container h1 {
+        font-size: 24px;
+    }
+
+    .signup-container input[type="email"] {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .signup-container .signup-button {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .signup-container p {
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .signup-container {
+        padding: 20px;
+        margin: 20px auto;
+    }
+
+    .signup-container h1 {
+        font-size: 20px;
+    }
+
+    .signup-container input[type="email"] {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .signup-container .signup-button {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .signup-container p {
+        font-size: 12px;
+    }
+}
+
+
+/* Login Section */
+.login-container {
+    text-align: center;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    margin: 40px auto;
+    font-family: Arial, sans-serif;
+    background-color: #292b2e42;
+}
+
+.login-container .logo img {
+    width: 120px; /* Slightly larger logo */
+    height: 120px;
+    margin: auto;
+    align-content: center;
+}
+
+.login-container h1 {
+    font-size: 28px;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.login-container form {
+    margin-bottom: 20px;
+}
+
+.login-container input[type="email"] {
+    width: 100%; /* Adjusted width to account for padding */
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #1f2123; /* Dark background for input fields */
+    color: white;
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+}
+
+.login-container input[type="email"]::placeholder {
+    color: #888888;
+}
+
+.login-container input[type="email"]:focus {
+    outline: none;
+    border-color: #3278ba;
+    box-shadow: 0 0 5px rgba(50, 120, 186, 0.5);
+}
+
+.login-container .login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #3278ba;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-container .login-button:hover {
+    background-color: #3278ba;
+    box-shadow: 0 4px 8px rgba(40, 99, 155, 0.4);
+}
+
+.login-container p {
+    font-size: 14px;
+    color: #555555;
+    margin-bottom: 10px;
+}
+
+.login-container .manual-login-link {
+    color: #3278ba;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.login-container .manual-login-link:hover {
+    text-decoration: underline;
+    color: #3278ba;
+}
+
+.login-container .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.login-container .divider hr {
+    flex-grow: 1;
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 0 10px;
+}
+
+.login-container .divider span {
+    font-size: 14px;
+    color: #888888;
+}
+
+.login-container .wordpress-login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #3278ba;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-container .wordpress-login-button:hover {
+    background-color: #3278ba;
+    box-shadow: 0 4px 8px rgba(2, 90, 107, 0.4);
+}
+
+.login-container .signup-text {
+    font-size: 14px;
+    color: #555555;
+    margin-top: 10px;
+}
+
+.login-container .signup-link {
+    color: #3278ba;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.login-container .signup-link:hover {
+    text-decoration: underline;
+    color: #255984;
+}
+/* Responsive Styles for Login Section */
+@media screen and (max-width: 768px) {
+    .login-container {
+        padding: 30px;
+        margin: 30px auto;
+    }
+
+    .login-container h1 {
+        font-size: 24px;
+    }
+
+    .login-container input[type="email"],
+    .login-container .login-button,
+    .login-container .wordpress-login-button {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .login-container p {
+        font-size: 13px;
+    }
+
+    .login-container .divider span {
+        font-size: 12px;
+    }
+
+    .login-container .signup-text {
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .login-container {
+        padding: 20px;
+        margin: 20px auto;
+    }
+
+    .login-container h1 {
+        font-size: 20px;
+    }
+
+    .login-container input[type="email"],
+    .login-container .login-button,
+    .login-container .wordpress-login-button {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .login-container p {
+        font-size: 12px;
+    }
+
+    .login-container .divider span {
+        font-size: 11px;
+    }
+
+    .login-container .signup-text {
+        font-size: 12px;
+    }
+}
