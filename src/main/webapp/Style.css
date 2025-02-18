@@ -5,8 +5,8 @@ body {
     background-color: #1f2123;
     color: white;
     display: flex;
-    flex-direction: column; /* Arrange content vertically */
-    min-height: 100vh; /* Ensure the body takes the full height of the viewport */
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 a {
@@ -16,7 +16,7 @@ a {
 }
 
 a:hover {
-    color: #72afea; /* Change the color on hover */
+    color: #72afea;
 }
 
 /* Header */
@@ -24,38 +24,44 @@ a:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
-    margin: 0 20px; /* Reduce margin for smaller screens */
+    padding: 10px; /* Reduced padding */
+    margin: 0 5px; /* Further reduced margin */
 }
 
 .logo {
     display: flex;
     align-items: center;
-    font-size: 24px;
+    font-size: 18px; /* Reduced font size */
     font-weight: bold;
 }
 
 .logo img {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-}
-/* Adjust the navigation bar (three dots) in small screens */
-.nav {
-    display: flex;
-    flex-wrap: nowrap; /* Prevent links from wrapping */
-    align-items: center;
-    position: relative; /* To ensure dropdown toggle aligns properly */
-}
-.nav a {
-    margin-left: 20px;
-    font-size: 14px;
-    border-color: #72afea;
-    transition: border-bottom 0.3s ease;
+    width: 25px; /* Reduced logo size */
+    height: 25px;
+    margin-right: 5px; /* Reduced margin */
 }
 
-.nav a:hover {
-    border-bottom: 2px #72afea; /* Add underline effect on hover */
+.nav {
+    display: none; /* Initially hidden for mobile */
+    flex-direction: column;
+    position: absolute;
+    top: 50px; /* Adjust as needed */
+    right: 0;
+    background-color: #1f2123;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+}
+
+.nav.show {
+    display: flex;
+}
+
+.nav a {
+    margin: 10px 0;
+    font-size: 14px; /* Adjusted font size */
+    padding: 5px;
+    display: block;
 }
 
 .nav .signup-btn {
@@ -72,679 +78,472 @@ a:hover {
     color: #1f2123;
 }
 
+.menu-icon {
+    display: block; /* Visible for mobile */
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
 /* Main Content */
 .main {
     text-align: center;
-    padding: 60px 20px;
+    padding: 20px; /* Reduced padding */
 }
 
 .main h1 {
-    font-size: 50px;
+    font-size: 30px; /* Reduced font size */
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 10px; /* Reduced margin */
 }
 
 .main h1 span {
-    font-size: 76px; /* Make the "S" larger */
-    color: #3c90dd; /* Optional: Add a color to the "S" for emphasis */
+    font-size: 40px; /* Reduced font size */
+    color: #3c90dd;
 }
 
 .main p {
-    font-size: 18px;
-    margin-bottom: 30px;
-    line-height: 1.5;
+    font-size: 14px; /* Reduced font size */
+    margin-bottom: 20px; /* Reduced margin */
+    line-height: 1.4;
 }
 
 .main .cta-btn {
     background-color: #3c90dd;
-    padding: 12px 20px;
+    padding: 10px 16px; /* Reduced padding */
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 14px; /* Reduced font size */
     font-weight: bold;
-    color: white; /* Ensure the font color is white */
+    color: white;
     text-decoration: none;
     transition: background-color 0.3s ease;
 }
 
 .main .cta-btn:hover {
-    background-color: #3278ba; /* Slightly darker blue */
+    background-color: #3278ba;
     color: white;
 }
 
 /* Footer */
 footer {
-    margin-top: auto; /* Push the footer to the bottom */
-    padding: 25px;
+    margin-top: auto;
+    padding: 15px; /* Reduced padding */
     text-align: center;
     background-color: #1a1a1a;
     color: #aaa;
-    font-size: 14px;
+    font-size: 12px; /* Reduced font size */
 }
 
-/* Responsive Styles */
-@media screen and (max-width: 1024px) {
-    .header {
-        padding: 20px;
-        margin: 0 10px; /* Reduce side margins */
-    }
-    .logo {
-        font-size: 20px;
-    }
-    .nav a {
-        font-size: 12px;
-        margin-left: 10px;
-    }
-    .nav .signup-btn {
-        padding: 6px 12px;
-        font-size: 12px;
-    }
-    .main h1 {
-        font-size: 40px;
-    }
-    .main h1 span {
-        font-size: 60px;
-    }
-    .main p {
-        font-size: 16px;
-    }
-    .main .cta-btn {
-        font-size: 14px;
-        padding: 10px 16px;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .header {
-        flex-direction: column; /* Stack header items vertically */
-        align-items: flex-start;
-    }
-    .nav {
-        display: flex;
-        flex-wrap: wrap; /* Wrap navigation links to the next line */
-    }
-    .main h1 {
-        font-size: 32px;
-    }
-    .main h1 span {
-        font-size: 48px;
-    }
-    .main p {
-        font-size: 14px;
-    }
-    .main .cta-btn {
-        font-size: 12px;
-        padding: 8px 14px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .header {
-        padding: 10px;
-    }
-    .nav a {
-        font-size: 10px;
-        margin-left: 5px;
-    }
-    .nav .signup-btn {
-        padding: 4px 8px;
-        font-size: 10px;
-    }
-    .main h1 {
-        font-size: 28px;
-    }
-    .main h1 span {
-        font-size: 36px;
-    }
-    .main p {
-        font-size: 12px;
-    }
-    .main .cta-btn {
-        font-size: 10px;
-        padding: 6px 10px;
-    }
-}
-/* Menu Icon (Hidden by default on larger screens) */
-.menu-icon {
-    display: none; /* Hidden by default on larger screens */
-    font-size: 24px;
-    color: white;
-    cursor: pointer;
-    position: absolute; /* Position relative to the parent container */
-    right: 20px; /* Adjust position to align with the right edge */
-    top: 20px; /* Align vertically with the header */
-}
-
-/* Dropdown Menu (Hidden by default) */
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 60px;
-    right: 20px;
-    background-color: #1a1a1a;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-    flex-direction: column;
-}
-
-.dropdown-menu a,
-.dropdown-menu .signup-btn {
-    margin: 5px 0;
-    display: block;
-    font-size: 14px;
-    text-align: left;
-}
-
-/* Responsive: Show Menu Icon */
-@media screen and (max-width: 768px) {
-    .nav {
-        display: none; /* Hide the navigation links */
-    }
-    .menu-icon {
-        display: block; /* Show the 3-dotted menu icon */
-    }
-    .dropdown-menu {
-        display: flex; /* Show dropdown menu when toggled */
-    }
-}
-/* Add toggle menu (three dots) styles */
-.nav .menu-toggle {
-    display: none; /* Hidden by default */
-    font-size: 24px;
-    cursor: pointer;
-    position: absolute;
-    right: 0; /* Keep it aligned to the right */
-    color: white;
-    background: transparent;
-    border: none;
-}
-
-/* When the screen width is small, show the menu toggle */
-@media screen and (max-width: 768px) {
-    .nav {
-        flex-direction: column; /* Stack links vertically */
-        display: none; /* Initially hidden */
-        width: 100%; /* Take full width */
-        position: absolute; /* Position dropdown below header */
-        top: 70px; /* Adjust according to header height */
-        right: 0; /* Align dropdown to the right */
-        background-color: #1f2123; /* Match header background */
-        z-index: 100; /* Make sure it appears above other elements */
-    }
-
-    .nav.show {
-        display: flex; /* Show when toggle is clicked */
-    }
-
-    .nav a {
-        margin: 10px 0; /* Space out vertically */
-    }
-
-    .menu-toggle {
-        display: block; /* Show the toggle */
-    }
-}
-/* Add styles for the large image */
+/* Large Image */
 .main img {
-    width: 100%; /* Make the image occupy full width */
-    max-width: 125%; /* Limit the maximum width */
-    height: auto; /* Maintain aspect ratio */
-    margin: 20px auto; /* Center the image with top/bottom margin */
-    display: block; /* Center the image horizontally */
-    border-radius: 10px; /* Optional: Add rounded corners for better aesthetics */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow effect */
-}
-
-/* Media queries for responsive behavior */
-@media screen and (max-width: 768px) {
-    .main img {
-        max-width: 110%; /* Reduce image size on medium screens */
-        margin: 10px auto; /* Adjust margin for medium screens */
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .main img {
-        max-width: 105%; /* Let the image occupy full width on small screens */
-        margin: 10px auto; /* Adjust margin for smaller screens */
-        border-radius: 5px; /* Slightly reduce border radius */
-    }
-}
-
-/*Features*/
-.feature{
+    width: 100%;
+    max-width: 100%; /* Ensures image doesn't overflow on mobile */
     height: auto;
+    margin: 10px auto;
+    display: block;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+/* Features Section */
 .features-section {
     text-align: center;
-    padding: 50px 20px;
+    padding: 20px; /* Reduced padding */
 }
 
 .features-section h1 {
     color: #ffffff;
-    margin-bottom: 30px;
+    margin-bottom: 20px; /* Reduced margin */
+    font-size: 24px; /* Adjusted font size */
 }
 
 .features-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    max-width: 1200px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjusted minmax */
+    gap: 10px; /* Reduced gap */
+    max-width: 100%;
     margin: 0 auto;
 }
 
 .feature {
-    padding: 20px;
-    border-radius: 8px;
+    padding: 10px; /* Reduced padding */
+    border-radius: 5px; /* Reduced border radius */
     text-align: center;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border: 1px solid #3c3c3c;
 }
 
 .feature:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .feature h2 {
-    margin: 15px 0 10px;
+    margin: 10px 0 5px; /* Reduced margin */
     color: #ffffff;
+    font-size: 16px; /* Adjusted font size */
 }
 
 .feature p {
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 0.9rem; /* Adjusted font size */
+    line-height: 1.4;
     color: #cccccc;
 }
 
 .feature-img {
-    width: 10px; /* Adjust the size as needed */
+    width: 10px;
     height: 10px;
     margin:0 auto;
-    object-fit: contain; /* Ensures the image scales nicely */
-    transform: scale(0.5); /* Scale the image to 80% of its size */
+    object-fit: contain;
+    transform: scale(0.5);
 }
+
 .feature-box {
     text-align: center;
-    padding: 10px; /* Reduce padding inside the container */
+    padding: 5px; /* Reduced padding */
     margin: 0 auto;
 }
 
-/* Signup Section */
-.signup-container {
+/* Signup/Login Sections */
+.signup-container, .login-container {
     text-align: center;
-    background-color: #292b2e42; /* Dark background to match the theme */
-    padding: 40px;
+    background-color: #292b2e42;
+    padding: 20px; /* Reduced padding */
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    width: 100%;
-    max-width: 400px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    width: 90%; /* Adjusted width */
+    max-width: 350px; /* Adjusted max width */
+    margin: 20px auto;
+}
+
+.signup-container .logo img, .login-container .logo img {
+    width: 80px; /* Adjusted logo size */
+    height: 80px;
     margin: auto;
 }
 
-.signup-container .logo img {
-    width: 120px; /* Slightly larger logo */
-    height: 120px;
-    margin: auto;
-}
-
-.signup-container h1 {
-    font-size: 28px;
+.signup-container h1, .login-container h1 {
+    font-size: 22px; /* Adjusted font size */
     color: white;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reduced margin */
 }
 
-.signup-container form {
-    margin-bottom: 20px;
-}
-
-.signup-container input[type="email"] {
-    width: 100%; /* Adjusted width to account for padding */
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #3c3c3c;
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: #1f2123; /* Dark background for input fields */
-    color: white;
-    box-sizing: border-box; /* Ensures padding and border are included in the width */
-}
-
-.signup-container input[type="email"]::placeholder {
-    color: #888; /* Placeholder text color */
-}
-
-.signup-container input[type="email"]:focus {
-    outline: none;
-    border-color: #72afea;
-    box-shadow: 0 0 5px rgba(114, 175, 234, 0.5);
-}
-/* Password input field */
-.signup-container input[type="password"] {
-    width: 100%; /* Same width as email field */
-    padding: 12px;
-    margin-bottom: 20px; /* Same margin as email field */
-    border: 1px solid #3c3c3c;
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: #1f2123; /* Dark background for input fields */
-    color: white;
-    box-sizing: border-box; /* Ensures padding and border are included in the width */
-}
-
-.signup-container input[type="password"]::placeholder {
-    color: #888; /* Placeholder text color */
-}
-
-.signup-container input[type="password"]:focus {
-    outline: none;
-    border-color: #72afea;
-    box-shadow: 0 0 5px rgba(114, 175, 234, 0.5);
-}
-.signup-container input[type="text"] {
-    width: 100%; /* Same width as email field */
-    padding: 12px;
-    margin-bottom: 20px; /* Same margin as email field */
-    border: 1px solid #3c3c3c;
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: #1f2123; /* Dark background for input fields */
-    color: white;
-    box-sizing: border-box; /* Ensures padding and border are included in the width */
-}
-
-.signup-container input[type="text"]::placeholder {
-    color: #888; /* Placeholder text color */
-}
-
-.signup-container input[type="text"]:focus {
-    outline: none;
-    border-color: #72afea;
-    box-shadow: 0 0 5px rgba(114, 175, 234, 0.5);
-}
-.signup-container .signup-button {
+.signup-container input[type="email"],
+.signup-container input[type="password"],
+.signup-container input[type="text"],
+.login-container input[type="email"] {
     width: 100%;
-    padding: 12px;
+    padding: 8px; /* Adjusted padding */
+    margin-bottom: 10px; /* Reduced margin */
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    font-size: 14px; /* Adjusted font size */
+    background-color: #1f2123;
+    color: white;
+    box-sizing: border-box;
+}
+
+.signup-container .signup-button, .login-container .login-button, .login-container .wordpress-login-button {
+    width: 100%;
+    padding: 10px; /* Adjusted padding */
     background-color: #3c90dd;
     border: none;
     border-radius: 4px;
     color: white;
-    font-size: 16px;
+    font-size: 14px; /* Adjusted font size */
     cursor: pointer;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.signup-container .signup-button:hover {
-    background-color: #3278ba;
-    box-shadow: 0 4px 8px rgba(50, 120, 186, 0.4);
-}
-
-.signup-container p {
-    font-size: 14px;
+.signup-container p, .login-container p {
+    font-size: 12px; /* Adjusted font size */
     color: #aaa;
-    margin-bottom: 10px;
+    margin-bottom: 5px; /* Reduced margin */
 }
 
-.signup-container .terms-link,
-.signup-container .login-link {
-    color: #72afea;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.signup-container .terms-link:hover,
-.signup-container .login-link:hover {
-    text-decoration: underline;
-    color: #9dc7f4;
-}
-
-/* Responsive Styles */
-@media screen and (max-width: 768px) {
-    .signup-container {
-        padding: 30px;
-    }
-
-    .signup-container h1 {
-        font-size: 24px;
-    }
-
-    .signup-container input[type="email"] {
-        padding: 10px;
-        font-size: 14px;
-    }
-
-    .signup-container .signup-button {
-        padding: 10px;
-        font-size: 14px;
-    }
-
-    .signup-container p {
-        font-size: 13px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .signup-container {
-        padding: 20px;
-        margin: 20px auto;
-    }
-
-    .signup-container h1 {
-        font-size: 20px;
-    }
-
-    .signup-container input[type="email"] {
-        padding: 8px;
-        font-size: 12px;
-    }
-
-    .signup-container .signup-button {
-        padding: 8px;
-        font-size: 12px;
-    }
-
-    .signup-container p {
-        font-size: 12px;
-    }
-}
-
-
-/* Login Section */
-.login-container {
-    text-align: center;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 400px;
-    margin: 40px auto;
-    font-family: Arial, sans-serif;
-    background-color: #292b2e42;
-}
-
-.login-container .logo img {
-    width: 120px; /* Slightly larger logo */
-    height: 120px;
-    margin: auto;
-    align-content: center;
-}
-
-.login-container h1 {
-    font-size: 28px;
-    color: #ffffff;
-    margin-bottom: 20px;
-}
-
-.login-container form {
-    margin-bottom: 20px;
-}
-
-.login-container input[type="email"] {
-    width: 100%; /* Adjusted width to account for padding */
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #3c3c3c;
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: #1f2123; /* Dark background for input fields */
+/* Home Page (Adapted for Mobile) */
+nav {
+    background-color: #1a1a1a;
     color: white;
-    box-sizing: border-box; /* Ensures padding and border are included in the width */
-}
-
-.login-container input[type="email"]::placeholder {
-    color: #888888;
-}
-
-.login-container input[type="email"]:focus {
-    outline: none;
-    border-color: #3278ba;
-    box-shadow: 0 0 5px rgba(50, 120, 186, 0.5);
-}
-
-.login-container .login-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #3278ba;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.login-container .login-button:hover {
-    background-color: #3278ba;
-    box-shadow: 0 4px 8px rgba(40, 99, 155, 0.4);
-}
-
-.login-container p {
-    font-size: 14px;
-    color: #555555;
-    margin-bottom: 10px;
-}
-
-.login-container .manual-login-link {
-    color: #3278ba;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.login-container .manual-login-link:hover {
-    text-decoration: underline;
-    color: #3278ba;
-}
-
-.login-container .divider {
+    padding: 8px 10px; /* Reduced padding */
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    margin: 20px 0;
 }
 
-.login-container .divider hr {
-    flex-grow: 1;
-    border: none;
-    border-top: 1px solid #ddd;
-    margin: 0 10px;
+nav h1 {
+    margin: 0;
+    font-size: 20px; /* Reduced font size */
 }
 
-.login-container .divider span {
-    font-size: 14px;
-    color: #888888;
-}
-
-.login-container .wordpress-login-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #3278ba;
-    border: none;
-    border-radius: 4px;
+nav button {
+    background-color: #3c90dd;
     color: white;
-    font-size: 16px;
+    border: none;
+    padding: 6px 12px; /* Reduced padding */
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 12px; /* Reduced font size */
 }
 
-.login-container .wordpress-login-button:hover {
-    background-color: #3278ba;
-    box-shadow: 0 4px 8px rgba(2, 90, 107, 0.4);
+.container {
+    display: flex;
+    flex-direction: column; /* Stacks sidebar and notes section */
+    height: auto; /* Adjust height */
 }
 
-.login-container .signup-text {
-    font-size: 14px;
-    color: #555555;
-    margin-top: 10px;
+.sidebar {
+    width: 100%; /* Takes full width */
+    background-color: #2c2c2c;
+    padding: 10px; /* Reduced padding */
+    color: white;
 }
 
-.login-container .signup-link {
-    color: #3278ba;
-    text-decoration: none;
-    transition: color 0.3s ease;
+.sidebar h2 {
+    margin-top: 0;
+    margin-bottom: 10px; /* Reduced margin */
+    font-size: 18px; /* Reduced font size */
 }
 
-.login-container .signup-link:hover {
-    text-decoration: underline;
-    color: #255984;
+.sidebar button {
+    background-color: #3c90dd;
+    color: white;
+    border: none;
+    padding: 6px 12px; /* Reduced padding */
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 5px; /* Reduced margin */
+    width: 100%;
+    text-align: left;
+    font-size: 12px; /* Reduced font size */
 }
-/* Responsive Styles for Login Section */
-@media screen and (max-width: 768px) {
-    .login-container {
-        padding: 30px;
-        margin: 30px auto;
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 6px 0; /* Reduced padding */
+    border-bottom: 1px solid #444;
+    cursor: pointer;
+    font-size: 14px; /* Reduced font size */
+}
+
+.sidebar-bottom-buttons {
+    width: 100%;
+    position: static; /* Remove absolute positioning */
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Reduced gap */
+    padding: 10px; /* Keep padding */
+}
+
+#importNote, #exportNote {
+    margin-top: 0; /* Remove auto margin */
+}
+
+.notes-section {
+    padding: 10px; /* Reduced padding */
+}
+
+.notes-section input[type="text"] {
+    width: 100%;
+    padding: 6px; /* Reduced padding */
+    margin-bottom: 5px; /* Reduced margin */
+    border: 1px solid #555;
+    background-color: #333;
+    color: white;
+    font-size: 14px; /* Reduced font size */
+}
+
+.notes-section button {
+    background-color: #3c90dd;
+    color: white;
+    border: none;
+    padding: 6px 12px; /* Reduced padding */
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 5px; /* Reduced margin */
+    font-size: 12px; /* Reduced font size */
+}
+
+#notesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px; /* Reduced gap */
+}
+
+.note {
+    background-color: #333;
+    border: 1px solid #555;
+    padding: 5px; /* Reduced padding */
+    width: 150px; /* Reduced width */
+    height: 120px; /* Reduced height */
+    overflow: hidden;
+    font-size: 12px; /* Reduced font size */
+}
+
+.note h3 {
+    margin-top: 0;
+    margin-bottom: 3px; /* Reduced margin */
+    font-size: 14px; /* Reduced font size */
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    overflow: auto;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #333;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%; /* Adjusted width */
+    max-width: 500px; /* Adjusted max width */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    margin-bottom: 10px;
+}
+
+.modal-header input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #555;
+    background-color: #444;
+    color: white;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.modal-body {
+    margin-bottom: 10px;
+}
+
+.modal-body textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #555;
+    background-color: #444;
+    color: white;
+    border-radius: 4px;
+    font-size: 16px;
+    min-height: 150px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toolbar {
+    display: flex;
+}
+
+.toolbar .icon-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.modal-footer button {
+    background-color: #3c90dd;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/*  Larger Screens */
+@media (min-width: 769px) {
+    .header {
+        flex-direction: row;
+        align-items: center;
+        padding: 20px 40px;
     }
-
-    .login-container h1 {
+    .logo {
         font-size: 24px;
     }
+    .nav {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        position: relative;
+        width: auto;
+        top: auto;
+        background-color: transparent;
+        z-index: auto;
+    }
+    .nav.show {
+        display: flex;
+    }
+    .nav a {
+        margin-left: 20px;
+        display: inline;
+    }
 
-    .login-container input[type="email"],
-    .login-container .login-button,
-    .login-container .wordpress-login-button {
-        padding: 10px;
+    .menu-icon {
+        display: none;
+    }
+    .main h1 {
+        font-size: 50px;
+    }
+    .main h1 span {
+        font-size: 76px;
+    }
+    .main p {
+        font-size: 18px;
+    }
+    .feature h2 {
+        font-size: 1.5rem;
+    }
+    .feature p {
+        font-size: 1rem;
+    }
+    .signup-container, .login-container {
+        max-width: 400px;
+    }
+    .container {
+        flex-direction: row;
+        height: calc(100vh - 60px);
+    }
+    .sidebar {
+        width: 250px;
+    }
+    .sidebar-bottom-buttons {
+        position: absolute;
+        width: 250px;
+        bottom: 10px;
+    }
+    .note {
+        width: 200px;
+        height: 150px;
         font-size: 14px;
     }
-
-    .login-container p {
-        font-size: 13px;
-    }
-
-    .login-container .divider span {
-        font-size: 12px;
-    }
-
-    .login-container .signup-text {
-        font-size: 13px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .login-container {
-        padding: 20px;
-        margin: 20px auto;
-    }
-
-    .login-container h1 {
-        font-size: 20px;
-    }
-
-    .login-container input[type="email"],
-    .login-container .login-button,
-    .login-container .wordpress-login-button {
-        padding: 8px;
-        font-size: 12px;
-    }
-
-    .login-container p {
-        font-size: 12px;
-    }
-
-    .login-container .divider span {
-        font-size: 11px;
-    }
-
-    .login-container .signup-text {
-        font-size: 12px;
+    .note h3 {
+        font-size: 16px;
     }
 }
