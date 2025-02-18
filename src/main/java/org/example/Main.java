@@ -41,7 +41,7 @@ public class Main {
                     note.setTitle("Project Plan");
 
                     // Encrypt the content using EncryptionUtil
-                    String encryptedContent = encryptContent("This is the project plan...");
+                    String encryptedContent = encryptContent("This is the  plan...");
                     if (encryptedContent == null) {
                         throw new RuntimeException("Failed to encrypt content.");
                     }

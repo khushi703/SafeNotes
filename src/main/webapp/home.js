@@ -15,13 +15,13 @@ modal.innerHTML = `
             <div class="toolbar">
                 <button class="icon-button" id="pinNoteButton">📌 </button>
                 <button class="icon-button" id="privateNoteButton">🔒 </button>
-                <button class="icon-button" id="addImageButton">🖼 </button>
+                <button class="icon-button" id="addImageButton">🖼️ </button>
                 <button class="icon-button" id="shareNoteButton">📤 </button>
                 <button class="icon-button" id="reminderButton">⏰ </button>
-                <button class="icon-button" id="deleteNoteButton">🗑 </button>
+                <button class="icon-button" id="deleteNoteButton">🗑️ </button>
                 <button class="icon-button" id="copyNoteButton">📋 </button>
                 <button class="icon-button" id="versionHistoryButton">📜 </button>
-                <button class="icon-button" id="checkboxButton">☑ </button>
+                <button class="icon-button" id="checkboxButton">☑️ </button>
             </div>
             <button id="closeModal">Save</button>
         </div>
@@ -182,7 +182,7 @@ copyNoteButton.addEventListener('click', function() {
     if (editingNote) {
         let noteTitle = editingNote.querySelector('h3').innerText;
         let noteContent = editingNote.querySelector('p').innerText;
-        navigator.clipboard.writeText(${noteTitle}\n${noteContent})
+        navigator.clipboard.writeText(`${noteTitle}\n${noteContent}`)
             .then(() => alert("Note copied to clipboard!"))
             .catch(err => console.error("Could not copy note: ", err));
     } else {
