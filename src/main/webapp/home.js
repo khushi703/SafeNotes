@@ -29,6 +29,9 @@ const noteContentTextarea = document.getElementById('noteContent');
 const checkboxContainer = document.getElementById('checkboxContainer');
 const titleError = document.getElementById('titleError');
 const notesContainer = document.getElementById('notesContainer');
+const folderList = document.getElementById('folderList');
+const createFolderButton = document.getElementById('createFolder');
+const notesButton = document.getElementById('Notes');
 
 let editingNote = null;
 let currentFolder = 'default';
@@ -43,7 +46,7 @@ addNoteButton.addEventListener('click', function () {
     editingNote = null;
 });
 
-// Function to add a new checkbox input
+// Add checkbox functionality
 function addCheckbox() {
     let checkboxDiv = document.createElement('div');
     checkboxDiv.classList.add('checkbox-item');
@@ -65,7 +68,6 @@ function addCheckbox() {
     checkboxInput.focus();
 }
 
-// Event listener for "+ Add Checkbox" button
 addCheckboxButton.addEventListener('click', function () {
     addCheckbox();
 });
@@ -91,7 +93,7 @@ closeModalButton.addEventListener('click', function () {
         editingNote.dataset.checkboxes = JSON.stringify(checkboxes);
         editingNote = null;
     } else {
-        addNote(noteTitleInput.value, noteContentTextarea.value, checkboxes, currentFolder);
+        addNote(noteTitleInput.value, noteContentTextarea.value, checkboxes, currentFolder, false);
     }
 
     noteTitleInput.value = '';
@@ -102,7 +104,7 @@ closeModalButton.addEventListener('click', function () {
     saveNotesToLocalStorage();
 });
 
-// Function to format note content (text + checkboxes)
+// Format note content (text + checkboxes)
 function formatNoteContent(text, checkboxes) {
     let formatted = `<p>${text}</p>`;
     checkboxes.forEach(cb => {
@@ -112,28 +114,31 @@ function formatNoteContent(text, checkboxes) {
 }
 
 // Add new note
-function addNote(title, content, checkboxes, folder) {
-    if (!title.trim()) return;
-
+function addNote(title, content, checkboxes, folder, isPinned) {
     let noteDiv = document.createElement('div');
     noteDiv.classList.add('note');
     noteDiv.dataset.folder = folder;
     noteDiv.dataset.checkboxes = JSON.stringify(checkboxes);
+    noteDiv.dataset.pinned = isPinned;
 
     noteDiv.innerHTML = `
         <h3>${title}</h3>
         <div class="note-content">${formatNoteContent(content, checkboxes)}</div>
+        <button class="pin-note">${isPinned ? 'Unpin' : 'Pin'}</button>
         <button class="duplicate-note">Duplicate</button>
         <button class="delete-note">Delete</button>
     `;
 
-    // Duplicate note functionality
+    noteDiv.querySelector('.pin-note').addEventListener('click', function (event) {
+        event.stopPropagation();
+        togglePin(noteDiv);
+    });
+
     noteDiv.querySelector('.duplicate-note').addEventListener('click', function (event) {
         event.stopPropagation();
         duplicateNote(title, content, checkboxes, folder);
     });
 
-    // Delete note functionality
     noteDiv.querySelector('.delete-note').addEventListener('click', function (event) {
         event.stopPropagation();
         deleteNote(noteDiv);
@@ -144,79 +149,80 @@ function addNote(title, content, checkboxes, folder) {
     });
 
     notesContainer.appendChild(noteDiv);
+    arrangeNotes();
     saveNotesToLocalStorage();
-    filterNotesByFolder();
 }
 
-// Duplicate note function
+// Toggle Pin
+function togglePin(noteDiv) {
+    noteDiv.dataset.pinned = noteDiv.dataset.pinned === 'true' ? 'false' : 'true';
+    noteDiv.querySelector('.pin-note').textContent = noteDiv.dataset.pinned === 'true' ? 'Unpin' : 'Pin';
+    arrangeNotes();
+    saveNotesToLocalStorage();
+}
+
+// Arrange pinned notes first
+function arrangeNotes() {
+    let notes = Array.from(document.querySelectorAll('.note'));
+    notes.sort((a, b) => (b.dataset.pinned === 'true') - (a.dataset.pinned === 'true'));
+    notes.forEach(note => notesContainer.appendChild(note));
+}
+
+// Duplicate note
 function duplicateNote(title, content, checkboxes, folder) {
-    addNote(title, content, checkboxes, folder);
+    addNote(title, content, checkboxes, folder, false);
 }
 
-// Edit an existing note
-function editNote(noteDiv) {
-    editingNote = noteDiv;
-    noteTitleInput.value = noteDiv.querySelector('h3').innerText;
-    noteContentTextarea.value = noteDiv.querySelector('.note-content p').innerText;
-    checkboxContainer.innerHTML = '';
-
-    let savedCheckboxes = JSON.parse(noteDiv.dataset.checkboxes || '[]');
-    savedCheckboxes.forEach(cb => {
-        let checkboxDiv = document.createElement('div');
-        checkboxDiv.classList.add('checkbox-item');
-        checkboxDiv.innerHTML = `
-            <input type="checkbox" ${cb.isChecked ? 'checked' : ''}>
-            <input type="text" class="checkboxText" value="${cb.text}">
-        `;
-        checkboxContainer.appendChild(checkboxDiv);
-    });
-
-    modal.style.display = 'block';
-    titleError.style.display = 'none';
-}
-
-// Delete a note
+// Delete note
 function deleteNote(noteDiv) {
     notesContainer.removeChild(noteDiv);
     saveNotesToLocalStorage();
 }
 
-// Filter notes based on the selected folder
-function filterNotesByFolder() {
-    const notes = document.querySelectorAll('.note');
-    notes.forEach(note => {
-        if (note.dataset.folder === currentFolder) {
-            note.style.display = 'block';
-        } else {
-            note.style.display = 'none';
-        }
-    });
-}
-
-// Save notes to local storage
-function saveNotesToLocalStorage() {
-    const notes = [];
-    document.querySelectorAll('.note').forEach(noteElement => {
-        notes.push({
-            title: noteElement.querySelector('h3').innerText,
-            content: noteElement.querySelector('.note-content p').innerText,
-            checkboxes: JSON.parse(noteElement.dataset.checkboxes || '[]'),
-            folder: noteElement.dataset.folder
+// Folder functionality
+createFolderButton.addEventListener('click', () => {
+    const folderName = prompt("Enter folder name:");
+    if (folderName) {
+        const folderItem = document.createElement('li');
+        const newFolderButton = document.createElement('button');
+        newFolderButton.textContent = folderName;
+        newFolderButton.dataset.folder = folderName;
+        newFolderButton.addEventListener('click', () => {
+            currentFolder = folderName;
+            filterNotesByFolder();
         });
-    });
-    localStorage.setItem('notes', JSON.stringify(notes));
-}
 
-// Load notes from local storage
-function loadNotesFromLocalStorage() {
-    const savedNotes = JSON.parse(localStorage.getItem('notes')) || [];
-    savedNotes.forEach(note => {
-        addNote(note.title, note.content, note.checkboxes, note.folder);
-    });
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = "X";
+        deleteButton.classList.add("delete-folder");
+        deleteButton.addEventListener('click', () => {
+            folderList.removeChild(folderItem);
+            if (currentFolder === folderName) {
+                currentFolder = 'default';
+                filterNotesByFolder();
+            }
+        });
+
+        folderItem.appendChild(newFolderButton);
+        folderItem.appendChild(deleteButton);
+        folderList.appendChild(folderItem);
+    }
+});
+
+// Show all notes in "default" folder
+notesButton.addEventListener('click', () => {
+    currentFolder = 'default';
     filterNotesByFolder();
+});
+
+// Load and filter notes
+function filterNotesByFolder() {
+    document.querySelectorAll('.note').forEach(note => {
+        note.style.display = note.dataset.folder === currentFolder ? 'block' : 'none';
+    });
 }
 
-// Initialize on page load
+// Load notes on page load
 window.addEventListener('load', () => {
     loadNotesFromLocalStorage();
 });
