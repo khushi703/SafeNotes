@@ -69,7 +69,6 @@ closeModalButton.addEventListener('click', function() {
     saveNotesToLocalStorage();
 });
 
-// Add a new note
 function addNote(title, content, folder) {
     if (!title.trim()) return;
 
@@ -79,7 +78,14 @@ function addNote(title, content, folder) {
     noteDiv.innerHTML = `
         <h3>${title}</h3>
         <p>${content}</p>
+        <button class="delete-note">Delete</button>
     `;
+
+    // Add event listener to delete the note
+    noteDiv.querySelector('.delete-note').addEventListener('click', function(event) {
+        event.stopPropagation(); // Prevent triggering the edit function
+        deleteNote(noteDiv);
+    });
 
     noteDiv.addEventListener('click', function() {
         editNote(this);
@@ -89,6 +95,11 @@ function addNote(title, content, folder) {
     saveNotesToLocalStorage();
     filterNotesByFolder();
 }
+function deleteNote(noteDiv) {
+    notesContainer.removeChild(noteDiv);
+    saveNotesToLocalStorage(); // Update storage after deletion
+}
+
 
 // Edit an existing note
 function editNote(noteDiv) {
