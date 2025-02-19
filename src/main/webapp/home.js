@@ -32,6 +32,8 @@ const notesContainer = document.getElementById('notesContainer');
 const folderList = document.getElementById('folderList');
 const createFolderButton = document.getElementById('createFolder');
 const notesButton = document.getElementById('Notes');
+const searchInput = document.getElementById('searchInput'); // Get the search input element
+
 
 let editingNote = null;
 let currentFolder = 'default';
@@ -106,9 +108,9 @@ closeModalButton.addEventListener('click', function () {
 
 // Format note content (text + checkboxes)
 function formatNoteContent(text, checkboxes) {
-    let formatted = `<p>${text}</p>`;
+    let formatted = <p>${text}</p>;
     checkboxes.forEach(cb => {
-        formatted += `<div><input type="checkbox" ${cb.isChecked ? 'checked' : ''} disabled> ${cb.text}</div>`;
+        formatted += <div><input type="checkbox" ${cb.isChecked ? 'checked' : ''} disabled> ${cb.text}</div>;
     });
     return formatted;
 }
@@ -225,4 +227,122 @@ function filterNotesByFolder() {
 // Load notes on page load
 window.addEventListener('load', () => {
     loadNotesFromLocalStorage();
+});
+
+// Local Storage functions
+function saveNotesToLocalStorage() {
+    const notes = Array.from(notesContainer.querySelectorAll('.note')).map(noteDiv => {
+        return {
+            title: noteDiv.querySelector('h3').innerText,
+            content: noteDiv.querySelector('.note-content').innerHTML,
+            checkboxes: JSON.parse(noteDiv.dataset.checkboxes),
+            folder: noteDiv.dataset.folder,
+            isPinned: noteDiv.dataset.pinned === 'true'
+        };
+    });
+    localStorage.setItem('notes', JSON.stringify(notes));
+}
+
+function loadNotesFromLocalStorage() {
+    const notes = JSON.parse(localStorage.getItem('notes') || '[]');
+    notes.forEach(note => {
+        const tempDiv = document.createElement('div'); // Create a temporary div
+        tempDiv.innerHTML = note.content;
+
+        // Extract text content from the div (excluding checkbox elements)
+        let noteContentText = '';
+        tempDiv.querySelectorAll('p').forEach(p => {
+            noteContentText += p.textContent + ' ';
+        });
+        noteContentText = noteContentText.trim(); // Remove trailing spaces
+
+        addNote(note.title, noteContentText, note.checkboxes, note.folder, note.isPinned);
+
+    });
+    arrangeNotes();
+}
+
+// Edit note
+function editNote(noteDiv) {
+    modal.style.display = 'block';
+    editingNote = noteDiv;
+    noteTitleInput.value = noteDiv.querySelector('h3').innerText;
+
+    // Extract text content from the note content (excluding checkbox elements)
+    const noteContentElement = noteDiv.querySelector('.note-content');
+    let noteContentText = '';
+
+    noteContentElement.querySelectorAll('p').forEach(p => {
+        noteContentText += p.textContent + ' ';
+    });
+
+    noteContentTextarea.value = noteContentText.trim(); // Remove trailing spaces
+    checkboxContainer.innerHTML = '';
+
+    let checkboxes = JSON.parse(noteDiv.dataset.checkboxes);
+    checkboxes.forEach(cb => {
+        let checkboxDiv = document.createElement('div');
+        checkboxDiv.classList.add('checkbox-item');
+        checkboxDiv.innerHTML = `
+            <input type="checkbox" ${cb.isChecked ? 'checked' : ''}>
+            <input type="text" class="checkboxText" placeholder="Enter task" value="${cb.text}">
+        `;
+
+        let checkboxInput = checkboxDiv.querySelector('.checkboxText');
+        checkboxInput.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                addCheckbox();
+            }
+        });
+
+        checkboxContainer.appendChild(checkboxDiv);
+    });
+}
+
+// Search functionality
+searchInput.addEventListener('input', function () {
+    const searchTerm = searchInput.value.toLowerCase();
+    const notes = Array.from(notesContainer.querySelectorAll('.note'));
+    const matchingNotes = [];
+
+    notes.forEach(note => {
+        const title = note.querySelector('h3').innerText.toLowerCase();
+        const content = note.querySelector('.note-content').innerText.toLowerCase();
+
+        const isMatch = title.includes(searchTerm) || content.includes(searchTerm);
+
+        if (isMatch) {
+            matchingNotes.push(note);
+            note.style.display = 'block';
+        } else {
+            note.style.display = 'none';
+        }
+    });
+
+    // Sort notes: Matching notes first, then pinned notes, then others
+    notes.sort((a, b) => {
+        const aMatches = matchingNotes.includes(a);
+        const bMatches = matchingNotes.includes(b);
+        const aPinned = a.dataset.pinned === 'true';
+        const bPinned = b.dataset.pinned === 'true';
+
+        if (aMatches && !bMatches) return -1;  // a comes before b
+        if (!aMatches && bMatches) return 1;   // b comes before a
+        if (aPinned && !bPinned) return -1;    // Pinned a comes before non-pinned b
+        if (!aPinned && bPinned) return 1;     // Pinned b comes before non-pinned a
+        return 0;  // Maintain original order
+    });
+
+    // Re-append notes to the container to reflect the new order
+    notes.forEach(note => notesContainer.appendChild(note));
+
+    // Ensure pinned notes are on top within matching notes
+    arrangeNotes();
+
+    // If search term is empty, reset filter
+    if (searchTerm === '') {
+        filterNotesByFolder();
+        arrangeNotes();
+    }
 });
