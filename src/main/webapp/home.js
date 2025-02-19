@@ -108,9 +108,9 @@ closeModalButton.addEventListener('click', function () {
 
 // Format note content (text + checkboxes)
 function formatNoteContent(text, checkboxes) {
-    let formatted = <p>${text}</p>;
+    let formatted = `<p>${text}</p>`;
     checkboxes.forEach(cb => {
-        formatted += <div><input type="checkbox" ${cb.isChecked ? 'checked' : ''} disabled> ${cb.text}</div>;
+        formatted += `<div><input type="checkbox" ${cb.isChecked ? 'checked' : ''} disabled> ${cb.text}</div>`;
     });
     return formatted;
 }
