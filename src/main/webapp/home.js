@@ -29,19 +29,16 @@ const noteContentTextarea = document.getElementById('noteContent');
 const checkboxContainer = document.getElementById('checkboxContainer');
 const titleError = document.getElementById('titleError');
 const notesContainer = document.getElementById('notesContainer');
-const folderList = document.getElementById('folderList');
-const createFolderButton = document.getElementById('createFolder');
-const notesButton = document.getElementById('Notes');
 
 let editingNote = null;
 let currentFolder = 'default';
 
 // Open modal for new note
-addNoteButton.addEventListener('click', function() {
+addNoteButton.addEventListener('click', function () {
     modal.style.display = 'block';
     noteTitleInput.value = '';
     noteContentTextarea.value = '';
-    checkboxContainer.innerHTML = ''; // Clear checkboxes
+    checkboxContainer.innerHTML = '';
     titleError.style.display = 'none';
     editingNote = null;
 });
@@ -57,7 +54,7 @@ function addCheckbox() {
     `;
 
     let checkboxInput = checkboxDiv.querySelector('.checkboxText');
-    checkboxInput.addEventListener('keydown', function(event) {
+    checkboxInput.addEventListener('keydown', function (event) {
         if (event.key === 'Enter') {
             event.preventDefault();
             addCheckbox();
@@ -69,12 +66,12 @@ function addCheckbox() {
 }
 
 // Event listener for "+ Add Checkbox" button
-addCheckboxButton.addEventListener('click', function() {
+addCheckboxButton.addEventListener('click', function () {
     addCheckbox();
 });
 
 // Close modal and save note
-closeModalButton.addEventListener('click', function() {
+closeModalButton.addEventListener('click', function () {
     if (!noteTitleInput.value.trim()) {
         titleError.style.display = 'block';
         return;
@@ -126,15 +123,23 @@ function addNote(title, content, checkboxes, folder) {
     noteDiv.innerHTML = `
         <h3>${title}</h3>
         <div class="note-content">${formatNoteContent(content, checkboxes)}</div>
+        <button class="duplicate-note">Duplicate</button>
         <button class="delete-note">Delete</button>
     `;
 
-    noteDiv.querySelector('.delete-note').addEventListener('click', function(event) {
+    // Duplicate note functionality
+    noteDiv.querySelector('.duplicate-note').addEventListener('click', function (event) {
+        event.stopPropagation();
+        duplicateNote(title, content, checkboxes, folder);
+    });
+
+    // Delete note functionality
+    noteDiv.querySelector('.delete-note').addEventListener('click', function (event) {
         event.stopPropagation();
         deleteNote(noteDiv);
     });
 
-    noteDiv.addEventListener('click', function() {
+    noteDiv.addEventListener('click', function () {
         editNote(this);
     });
 
@@ -143,35 +148,48 @@ function addNote(title, content, checkboxes, folder) {
     filterNotesByFolder();
 }
 
-// Edit note
+// Duplicate note function
+function duplicateNote(title, content, checkboxes, folder) {
+    addNote(title, content, checkboxes, folder);
+}
+
+// Edit an existing note
 function editNote(noteDiv) {
     editingNote = noteDiv;
     noteTitleInput.value = noteDiv.querySelector('h3').innerText;
-    noteContentTextarea.value = noteDiv.querySelector('.note-content p')?.innerText || '';
+    noteContentTextarea.value = noteDiv.querySelector('.note-content p').innerText;
     checkboxContainer.innerHTML = '';
 
-    let checkboxes = JSON.parse(noteDiv.dataset.checkboxes || '[]');
-    checkboxes.forEach(cb => {
-        addCheckbox();
-        let lastCheckbox = checkboxContainer.lastChild;
-        lastCheckbox.querySelector('.checkboxText').value = cb.text;
-        lastCheckbox.querySelector('input[type="checkbox"]').checked = cb.isChecked;
+    let savedCheckboxes = JSON.parse(noteDiv.dataset.checkboxes || '[]');
+    savedCheckboxes.forEach(cb => {
+        let checkboxDiv = document.createElement('div');
+        checkboxDiv.classList.add('checkbox-item');
+        checkboxDiv.innerHTML = `
+            <input type="checkbox" ${cb.isChecked ? 'checked' : ''}>
+            <input type="text" class="checkboxText" value="${cb.text}">
+        `;
+        checkboxContainer.appendChild(checkboxDiv);
     });
 
     modal.style.display = 'block';
     titleError.style.display = 'none';
 }
 
-// Delete note
+// Delete a note
 function deleteNote(noteDiv) {
     notesContainer.removeChild(noteDiv);
     saveNotesToLocalStorage();
 }
 
-// Filter notes by folder
+// Filter notes based on the selected folder
 function filterNotesByFolder() {
-    document.querySelectorAll('.note').forEach(note => {
-        note.style.display = note.dataset.folder === currentFolder ? 'block' : 'none';
+    const notes = document.querySelectorAll('.note');
+    notes.forEach(note => {
+        if (note.dataset.folder === currentFolder) {
+            note.style.display = 'block';
+        } else {
+            note.style.display = 'none';
+        }
     });
 }
 
@@ -181,7 +199,7 @@ function saveNotesToLocalStorage() {
     document.querySelectorAll('.note').forEach(noteElement => {
         notes.push({
             title: noteElement.querySelector('h3').innerText,
-            content: noteElement.querySelector('.note-content p')?.innerText || '',
+            content: noteElement.querySelector('.note-content p').innerText,
             checkboxes: JSON.parse(noteElement.dataset.checkboxes || '[]'),
             folder: noteElement.dataset.folder
         });
@@ -198,42 +216,7 @@ function loadNotesFromLocalStorage() {
     filterNotesByFolder();
 }
 
-// Create a new folder (with delete button)
-createFolderButton.addEventListener('click', () => {
-    const folderName = prompt("Enter folder name:");
-    if (folderName) {
-        const folderItem = document.createElement('li');
-        const newFolderButton = document.createElement('button');
-        newFolderButton.textContent = folderName;
-        newFolderButton.dataset.folder = folderName;
-        newFolderButton.addEventListener('click', () => {
-            currentFolder = folderName;
-            filterNotesByFolder();
-        });
-
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = "X";
-        deleteButton.classList.add("delete-folder");
-        deleteButton.addEventListener('click', () => {
-            folderList.removeChild(folderItem);
-            localStorage.removeItem(`notes-${folderName}`);
-            if (currentFolder === folderName) {
-                currentFolder = 'default';
-                filterNotesByFolder();
-            }
-        });
-
-        folderItem.appendChild(newFolderButton);
-        folderItem.appendChild(deleteButton);
-        folderList.appendChild(folderItem);
-    }
+// Initialize on page load
+window.addEventListener('load', () => {
+    loadNotesFromLocalStorage();
 });
-
-// Show all notes in default section
-notesButton.addEventListener('click', () => {
-    currentFolder = 'default';
-    filterNotesByFolder();
-});
-
-// Load notes on page load
-window.addEventListener('load', loadNotesFromLocalStorage);
