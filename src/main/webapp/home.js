@@ -31,11 +31,13 @@ let editingNote = null;
 let currentFolder = 'default';
 let lastOpenedNote = null;
 
-// Function to open the modal
 addNoteButton.addEventListener('click', function() {
     modal.style.display = 'block';
-    noteTitleInput.value = lastOpenedNote ? lastOpenedNote.title : '';
-    noteContentTextarea.value = lastOpenedNote ? lastOpenedNote.content : '';
+
+    // Clear previous values to ensure a fresh note
+    noteTitleInput.value = '';
+    noteContentTextarea.value = '';
+
     titleError.style.display = 'none';
     editingNote = null;
 });
