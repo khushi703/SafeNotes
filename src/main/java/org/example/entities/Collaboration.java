@@ -9,27 +9,24 @@ import java.time.LocalDateTime;
 public class Collaboration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private Long Collaboration_id;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "User_id")
     private User user;
-
     @ManyToOne
-    @JoinColumn(name = "note_id")
+    @JoinColumn(name = "Note_id")
     private Note note;
-
     private LocalDateTime invitedAt;
     private boolean accepted;
 
     // Constructors, getters, and setters
 
     public Long getId() {
-        return id;
+        return Collaboration_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long Collaboration_id) {
+        this.Collaboration_id = Collaboration_id;
     }
 
     public User getUser() {

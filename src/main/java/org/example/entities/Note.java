@@ -1,16 +1,12 @@
 package org.example.entities;
-
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.Set;
-
 @Entity
 public class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private Long Note_id;
     private String title;
 
     @Lob
@@ -20,11 +16,11 @@ public class Note {
     private LocalDateTime updatedDate;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "User_id")
     private User owner;
 
     @ManyToOne
-    @JoinColumn(name = "folder_id")
+    @JoinColumn(name = "Folder_id")
     private Folder folder;
 
     @OneToMany(mappedBy = "note", cascade = CascadeType.ALL)
@@ -33,11 +29,11 @@ public class Note {
     // Constructors, getters, and setters
 
     public Long getId() {
-        return id;
+        return Note_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long Note_id) {
+        this.Note_id = Note_id;
     }
 
     public String getTitle() {

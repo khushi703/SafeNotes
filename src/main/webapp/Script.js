@@ -57,7 +57,7 @@
             };
 
             // Submit data via a POST request to the backend
-            fetch("http://localhost:8080/api/auth/signup", {
+            fetch("http://localhost:8080/api/users/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
