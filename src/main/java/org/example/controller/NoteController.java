@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.entities.Note;
 import org.example.entities.User;
+import org.example.service.CustomUserDetails;
 import org.example.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,10 @@ public class NoteController {
     }
 
     @PostMapping
-    public ResponseEntity<Note> createNote(@RequestBody Note note, @AuthenticationPrincipal User user) {
+    public ResponseEntity<Note> createNote(@RequestBody Note note, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        // Get the authenticated user
+        User user = userDetails.getUser();
+
         // Set the owner (authenticated user)
         note.setOwner(user);
 
