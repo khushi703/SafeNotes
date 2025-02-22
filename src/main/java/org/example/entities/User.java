@@ -5,14 +5,23 @@ import jakarta.persistence.*;
 import java.util.Set;
 
 @Entity
+@Table(name = "user") // Explicitly specify the table name
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "User_id")
+    private Long User_id;
 
     private String username;
     private String email;
     private String password;
+    public User() {}
+
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private Set<Note> notes;
@@ -26,11 +35,11 @@ public class User {
     // Constructors, getters, and setters
 
     public Long getId() {
-        return id;
+        return User_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long User_id) {
+        this.User_id = User_id;
     }
 
     public String getUsername() {
@@ -81,4 +90,3 @@ public class User {
         this.collaborations = collaborations;
     }
 }
-
