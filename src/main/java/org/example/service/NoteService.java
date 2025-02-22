@@ -3,6 +3,7 @@ import org.example.entities.Note;
 import org.example.entities.User;
 import org.example.entities.Folder;
 import org.example.repository.NoteRepository;
+import org.example.utils.EncryptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -15,6 +16,8 @@ public class NoteService {
     @Autowired
     private NoteRepository noteRepository;
 
+    @Autowired
+    private EncryptionUtil encryptionUtil; // Inject EncryptionUtil
     public List<Note> getAllNotes() {
         return noteRepository.findAll();
     }
@@ -32,9 +35,22 @@ public class NoteService {
     }
 
     public Note createNote(Note note) {
-        note.setCreatedDate(LocalDateTime.now());
-        note.setUpdatedDate(LocalDateTime.now());
-        return noteRepository.save(note);
+        try {
+            // Encrypt the content
+            String encryptedContent = encryptionUtil.encrypt(note.getEncryptedContent());
+            note.setEncryptedContent(encryptedContent);
+
+            // Set the password (if provided)
+            note.setPassword(note.getPassword());
+
+            // Set created and updated dates
+            note.setCreatedDate(LocalDateTime.now());
+            note.setUpdatedDate(LocalDateTime.now());
+
+            return noteRepository.save(note);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to encrypt note content", e);
+        }
     }
 
     public Note updateNote(Long id, Note updatedNote) {
