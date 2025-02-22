@@ -1,9 +1,11 @@
 package org.example.controller;
 
 import org.example.entities.Note;
+import org.example.entities.User;
 import org.example.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,8 +31,13 @@ public class NoteController {
     }
 
     @PostMapping
-    public Note createNote(@RequestBody Note note) {
-        return noteService.createNote(note);
+    public ResponseEntity<Note> createNote(@RequestBody Note note, @AuthenticationPrincipal User user) {
+        // Set the owner (authenticated user)
+        note.setOwner(user);
+
+        // Create the note
+        Note createdNote = noteService.createNote(note);
+        return ResponseEntity.ok(createdNote);
     }
 
     @PutMapping("/{id}")
