@@ -4,6 +4,7 @@ import org.example.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
+import java.util.Collections;
 
 public class CustomUserDetails implements UserDetails {
     private final User user;
@@ -14,7 +15,8 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        // Return the user's roles/authorities
+        return Collections.emptyList(); // Replace with actual roles if applicable
     }
 
     @Override
@@ -45,5 +47,8 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+    public User getUser() {
+        return user;
     }
 }

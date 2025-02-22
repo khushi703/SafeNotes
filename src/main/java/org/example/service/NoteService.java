@@ -34,6 +34,7 @@ public class NoteService {
         return noteRepository.findByFolder(folder);
     }
 
+
     public Note createNote(Note note) {
         try {
             // Encrypt the content
@@ -47,6 +48,7 @@ public class NoteService {
             note.setCreatedDate(LocalDateTime.now());
             note.setUpdatedDate(LocalDateTime.now());
 
+            // Save the note (owner is already set by the controller)
             return noteRepository.save(note);
         } catch (Exception e) {
             throw new RuntimeException("Failed to encrypt note content", e);
