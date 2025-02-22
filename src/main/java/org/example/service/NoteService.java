@@ -57,10 +57,20 @@ public class NoteService {
 
     public Note updateNote(Long id, Note updatedNote) {
         return noteRepository.findById(id).map(note -> {
+            // Encrypt the content before updating
+            try {
+                String encryptedContent = encryptionUtil.encrypt(updatedNote.getEncryptedContent());
+                note.setEncryptedContent(encryptedContent);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to encrypt note content", e);
+            }
+
+            // Update other fields
             note.setTitle(updatedNote.getTitle());
-            note.setEncryptedContent(updatedNote.getEncryptedContent());
             note.setPassword(updatedNote.getPassword());
             note.setUpdatedDate(LocalDateTime.now());
+
+            // Save the updated note
             return noteRepository.save(note);
         }).orElseThrow(() -> new RuntimeException("Note not found"));
     }
