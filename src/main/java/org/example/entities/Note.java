@@ -1,4 +1,6 @@
 package org.example.entities;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -20,6 +22,7 @@ public class Note {
     private User owner;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "Folder_id")
     private Folder folder;
 
