@@ -1,4 +1,7 @@
 package org.example.entities;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import java.util.Set;
@@ -8,15 +11,19 @@ public class Folder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Folder_id;
+
     private String fname;
+
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "User_id")
     private User user;
+
     @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL)
+    @JsonManagedReference  // Use @JsonManagedReference for the "notes" relationship
     private Set<Note> notes;
 
-    // Constructors, getters, and setters
-
+    // Getters and Setters
     public Long getId() {
         return Folder_id;
     }
