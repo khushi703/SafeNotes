@@ -1,5 +1,6 @@
 package org.example.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -27,6 +28,7 @@ public class User {
     private Set<Note> notes;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    @JsonManagedReference
     private Set<Folder> folders;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
