@@ -45,8 +45,16 @@ public class CollaborationController {
         return ResponseEntity.ok(collaborationService.rejectCollaboration(collaborationId));
     }
 
+    @GetMapping("/note-permission/{userId}/{noteId}/{role}")
+    public ResponseEntity<Boolean> hasNotePermission(
+            @PathVariable Long userId,
+            @PathVariable Long noteId,
+            @PathVariable Collaboration.CollaborationRole role
+    ) {
+        return ResponseEntity.ok(collaborationService.hasNotePermission(userId, noteId, role));
+    }
     @GetMapping("/folder-permission/{userId}/{folderId}/{role}")
     public ResponseEntity<Boolean> hasFolderPermission(@PathVariable Long userId, @PathVariable Long folderId, @PathVariable Collaboration.CollaborationRole role) {
-        return ResponseEntity.ok(collaborationService.hasFolderPermission(userId, folderId, role));
+        return ResponseEntity.ok(collaborationService.hasNotePermission(userId, folderId, role));
     }
 }

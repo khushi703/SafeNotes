@@ -13,4 +13,6 @@ public interface CollaborationRepository extends JpaRepository<Collaboration, Lo
     List<Collaboration> findByUserId(Long userId);
     List<Collaboration> findByUserIdAndFolderId(Long userId, Long folderId); // Add this method
     List<Collaboration> findByUserIdAndStatus(Long userId, Collaboration.CollaborationStatus status);
+    List<Collaboration> findByUserIdAndNoteId(Long userId, Long noteId);
+
 }
