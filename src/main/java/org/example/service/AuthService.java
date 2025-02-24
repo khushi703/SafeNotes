@@ -10,18 +10,47 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-    @Autowired
-    private AuthenticationManager authenticationManager;
+
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+    private final UserDetailsService userDetailsService;
 
     @Autowired
-    private JwtUtil jwtUtil;
+    public AuthService(AuthenticationManager authenticationManager, JwtUtil jwtUtil, UserDetailsService userDetailsService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
+    }
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
+    /**
+     * Authenticates a user with the provided username and password.
+     *
+     * @param username The username of the user.
+     * @param password The password of the user.
+     * @return A JWT token if authentication is successful.
+     */
     public String login(String username, String password) {
+        // Authenticate the user
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+
+        // Load user details
         final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        return jwtUtil.generateToken(userDetails.getUsername()); // ✅ FIXED
+
+        // Generate and return a JWT token
+        return jwtUtil.generateToken(userDetails.getUsername());
+    }
+
+    /**
+     * Generates a JWT token for an OAuth2 user.
+     *
+     * @param email The email of the OAuth2 user.
+     * @return A JWT token.
+     */
+    public String generateTokenForOAuth2User(String email) {
+        // Load user details
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
+        // Generate and return a JWT token
+        return jwtUtil.generateToken(userDetails.getUsername());
     }
 }
