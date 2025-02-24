@@ -11,7 +11,6 @@ public class Folder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Folder_id;
-
     private String fname;
 
     @ManyToOne

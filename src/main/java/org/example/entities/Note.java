@@ -22,8 +22,8 @@ public class Note {
     private User owner;
 
     @ManyToOne
+    @JoinColumn(name = "Folder_id",nullable = true)
     @JsonBackReference
-    @JoinColumn(name = "Folder_id")
     private Folder folder;
 
     @OneToMany(mappedBy = "note", cascade = CascadeType.ALL)

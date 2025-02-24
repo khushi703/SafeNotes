@@ -31,7 +31,7 @@ public class NoteController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Note> createNote(@RequestBody Note note, @AuthenticationPrincipal CustomUserDetails userDetails) {
         // Get the authenticated user
         User user = userDetails.getUser();
@@ -39,6 +39,8 @@ public class NoteController {
         // Set the owner (authenticated user)
         note.setOwner(user);
 
+        // Folder is optional, so no need to validate it
+        // If folder is provided, it will be set; otherwise, it will remain null
         // Create the note
         Note createdNote = noteService.createNote(note);
         return ResponseEntity.ok(createdNote);
