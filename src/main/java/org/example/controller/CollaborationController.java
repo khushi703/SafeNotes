@@ -5,6 +5,7 @@ import org.example.service.CollaborationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -14,18 +15,38 @@ public class CollaborationController {
     private CollaborationService collaborationService;
 
     @PostMapping("/share")
-    public ResponseEntity<Collaboration> shareNote(@RequestBody Collaboration collaboration) {
+    public ResponseEntity<Collaboration> shareNoteOrFolder(@RequestBody Collaboration collaboration) {
         return ResponseEntity.ok(collaborationService.addCollaboration(collaboration));
     }
 
     @GetMapping("/note/{noteId}")
-    public ResponseEntity<List<Collaboration>> getCollaborations(@PathVariable Long noteId) {
-        return ResponseEntity.ok(collaborationService.getCollaborators(noteId));
+    public ResponseEntity<List<Collaboration>> getNoteCollaborations(@PathVariable Long noteId) {
+        return ResponseEntity.ok(collaborationService.getCollaboratorsByNote(noteId));
+    }
+
+    @GetMapping("/folder/{folderId}")
+    public ResponseEntity<List<Collaboration>> getFolderCollaborations(@PathVariable Long folderId) {
+        return ResponseEntity.ok(collaborationService.getCollaboratorsByFolder(folderId));
     }
 
     @DeleteMapping("/{collaborationId}")
     public ResponseEntity<String> removeCollaboration(@PathVariable Long collaborationId) {
         collaborationService.removeCollaboration(collaborationId);
         return ResponseEntity.ok("Collaboration removed successfully");
+    }
+
+    @PostMapping("/accept/{collaborationId}")
+    public ResponseEntity<Collaboration> acceptCollaboration(@PathVariable Long collaborationId) {
+        return ResponseEntity.ok(collaborationService.acceptCollaboration(collaborationId));
+    }
+
+    @PostMapping("/reject/{collaborationId}")
+    public ResponseEntity<Collaboration> rejectCollaboration(@PathVariable Long collaborationId) {
+        return ResponseEntity.ok(collaborationService.rejectCollaboration(collaborationId));
+    }
+
+    @GetMapping("/folder-permission/{userId}/{folderId}/{role}")
+    public ResponseEntity<Boolean> hasFolderPermission(@PathVariable Long userId, @PathVariable Long folderId, @PathVariable Collaboration.CollaborationRole role) {
+        return ResponseEntity.ok(collaborationService.hasFolderPermission(userId, folderId, role));
     }
 }
