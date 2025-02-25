@@ -20,10 +20,12 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+    private final EmailService emailService;  // ✅ Inject EmailService
 
-    public OAuth2SuccessHandler(UserRepository userRepository, JwtUtil jwtUtil) {
+    public OAuth2SuccessHandler(UserRepository userRepository, JwtUtil jwtUtil, EmailService emailService) {
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
+        this.emailService = emailService;  // ✅ Initialize EmailService
     }
 
     @Override
@@ -43,13 +45,20 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         // Check if user exists, otherwise create new user
         Optional<User> existingUser = userRepository.findByEmail(email);
+        boolean isNewUser = existingUser.isEmpty(); // ✅ Check if it's a new user
+
         User user = existingUser.orElseGet(() -> {
             User newUser = new User();
             newUser.setEmail(email);
-            newUser.setUsername(email);
+            newUser.setUsername(name);
             newUser.setPassword(""); // No password for OAuth users
             return userRepository.save(newUser);
         });
+
+        // ✅ Send welcome email if new user
+        if (isNewUser) {
+            emailService.sendWelcomeEmail(email);
+        }
 
         // Generate JWT token
         String jwtToken = jwtUtil.generateToken(user.getEmail());
