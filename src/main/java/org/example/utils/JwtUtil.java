@@ -23,12 +23,20 @@ public class JwtUtil {
     }
 
     public String generateToken(String username) {
-        return Jwts.builder()
+        // Log the username and current time for debugging
+        System.out.println("Generating token for username: " + username);
+        System.out.println("Current time: " + new Date(System.currentTimeMillis()));
+
+        String token = Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSigningKey(), io.jsonwebtoken.SignatureAlgorithm.HS256)
                 .compact();
+
+        // Log the generated token for debugging
+        System.out.println("Generated Token: " + token);
+        return token;
     }
 
     public String extractUsername(String token) {

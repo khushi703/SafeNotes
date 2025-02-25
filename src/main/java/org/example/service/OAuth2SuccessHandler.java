@@ -20,12 +20,12 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
-    private final EmailService emailService;  // ✅ Inject EmailService
+    private final EmailService emailService;
 
     public OAuth2SuccessHandler(UserRepository userRepository, JwtUtil jwtUtil, EmailService emailService) {
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
-        this.emailService = emailService;  // ✅ Initialize EmailService
+        this.emailService = emailService;
     }
 
     @Override
@@ -39,13 +39,19 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         // If email is null, redirect to failure page
         if (email == null) {
-            response.sendRedirect("http://localhost:63342/oauth-failure.html"); // Change if needed
+            response.sendRedirect("http://localhost:63342/oauth-failure.html");
             return;
         }
 
+        // Log the email and name from OAuth2
+        System.out.println("Email from OAuth2: " + email);
+        System.out.println("Name from OAuth2: " + name);
+
         // Check if user exists, otherwise create new user
         Optional<User> existingUser = userRepository.findByEmail(email);
-        boolean isNewUser = existingUser.isEmpty(); // ✅ Check if it's a new user
+        System.out.println("Existing User: " + existingUser.orElse(null)); // Log existing user
+
+        boolean isNewUser = existingUser.isEmpty();
 
         User user = existingUser.orElseGet(() -> {
             User newUser = new User();
@@ -55,7 +61,10 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             return userRepository.save(newUser);
         });
 
-        // ✅ Send welcome email if new user
+        // Log the user after fetch/create
+        System.out.println("User after fetch/create: " + user);
+
+        // Send welcome email if new user
         if (isNewUser) {
             emailService.sendWelcomeEmail(email);
         }
@@ -63,8 +72,11 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         // Generate JWT token
         String jwtToken = jwtUtil.generateToken(user.getEmail());
 
-        // ✅ Redirect to frontend with JWT token
-        response.sendRedirect("http://localhost:63342/SafeNotes/src/main/webapp/home.html?token=" + jwtToken);
+        // Log the generated token
+        System.out.println("Generated Token: " + jwtToken);
+
+        // Redirect to frontend with JWT token
+        response.sendRedirect("http://localhost:3000/home.html?token=" + jwtToken);
 
     }
 }
