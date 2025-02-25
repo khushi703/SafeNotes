@@ -39,7 +39,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         // If email is null, redirect to failure page
         if (email == null) {
-            response.sendRedirect("http://localhost:3000/oauth-failure");
+            response.sendRedirect("http://localhost:63342/oauth-failure.html"); // Change if needed
             return;
         }
 
@@ -63,7 +63,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         // Generate JWT token
         String jwtToken = jwtUtil.generateToken(user.getEmail());
 
-        // Redirect to frontend with JWT token
-        response.sendRedirect("http://localhost:3000/oauth-success?token=" + jwtToken);
+        // ✅ Redirect to frontend with JWT token
+        response.sendRedirect("http://localhost:63342/SafeNotes/src/main/webapp/home.html?token=" + jwtToken);
+
     }
 }

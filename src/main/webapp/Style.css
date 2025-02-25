@@ -234,7 +234,8 @@ footer {
 .signup-container input[type="email"],
 .signup-container input[type="password"],
 .signup-container input[type="text"],
-.login-container input[type="email"] {
+.login-container input[type="text"],
+.login-container input[type="password"]{
     width: 100%;
     padding: 8px; /* Adjusted padding */
     margin-bottom: 10px; /* Reduced margin */

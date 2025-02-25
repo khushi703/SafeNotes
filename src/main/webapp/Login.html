@@ -4,24 +4,26 @@
     <meta charset="UTF-8">
     <title>Login to SafeNotes</title>
     <link href="Style.css" rel="stylesheet">
-    <link href="../../../res/Logo.png" rel="icon"type="image/png">
+    <link href="res/Logo.png" rel="icon" type="image/png">
 </head>
 <body>
 <div class="login-container">
     <div class="logo">
-        <img src="../../../res/Logo.png" alt="Logo">
+        <img src="res/Logo.png" alt="Logo">
     </div>
     <h1>Log in</h1>
     <form>
-        <input type="email" placeholder="Email address" required>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
         <button type="submit" class="login-button">Log in with email</button>
     </form>
-    <p>We’ll email you a code to log in, or you can <a href="#" class="manual-login-link">log in manually</a>.</p>
+    <p>You will get and mail </p>
     <div class="divider">
         <hr> <span>Or</span> <hr>
     </div>
     <button class="wordpress-login-button">Log in with Google</button>
-    <p class="signup-text">Don’t have an account? <a href="#" class="signup-link">Sign up</a></p>
+    <p class="signup-text">Don’t have an account? <a href="SignUp.html" class="signup-link">Sign up</a></p>
 </div>
 </body>
+<script src="login.js"></script>
 </html>

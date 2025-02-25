@@ -346,3 +346,53 @@ searchInput.addEventListener('input', function () {
         arrangeNotes();
     }
 });
+// Extract token from URL
+const params = new URLSearchParams(window.location.search);
+const token = params.get("token");
+
+if (token) {
+    // ✅ Store JWT token in localStorage for further API calls
+    localStorage.setItem("jwtToken", token);
+
+    // ✅ Remove token from URL after storing it
+    window.history.replaceState({}, document.title, "home.html");
+}
+
+// ✅ Redirect to login page if no token is found
+if (!localStorage.getItem("jwtToken")) {
+    window.location.href = "login.html";
+}
+
+// Function to get token for API requests
+function getAuthHeaders() {
+    const jwtToken = localStorage.getItem("jwtToken");
+    return {
+        "Authorization": `Bearer ${jwtToken}`,
+        "Content-Type": "application/json"
+    };
+}
+
+// Example of an API call with authentication
+async function fetchNotes() {
+    try {
+        const response = await fetch("http://localhost:8080/api/notes", {
+            method: "GET",
+            headers: getAuthHeaders()
+        });
+
+        if (response.status === 401) {
+            alert("Session expired. Please log in again.");
+            localStorage.removeItem("jwtToken");
+            window.location.href = "login.html";
+            return;
+        }
+
+        const notes = await response.json();
+        console.log(notes);
+    } catch (error) {
+        console.error("Error fetching notes:", error);
+    }
+}
+
+// Call fetchNotes when the page loads
+window.addEventListener("load", fetchNotes);
