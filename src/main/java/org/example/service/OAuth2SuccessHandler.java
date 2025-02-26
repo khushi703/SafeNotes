@@ -76,7 +76,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         System.out.println("Generated Token: " + jwtToken);
 
         // Redirect to frontend with JWT token
-        response.sendRedirect("http://localhost:3000/home.html?token=" + jwtToken);
+        response.sendRedirect("http://localhost:63342/safeNotes/src/main/webapp/home.html?token=" + jwtToken);
 
     }
 }
