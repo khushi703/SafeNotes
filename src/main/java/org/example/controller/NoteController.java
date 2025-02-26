@@ -1,5 +1,5 @@
 package org.example.controller;
-
+import org.example.dto.NoteDTO;
 import org.example.entities.Note;
 import org.example.entities.User;
 import org.example.service.CustomUserDetails;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/notes")
 public class NoteController {
@@ -20,45 +20,77 @@ public class NoteController {
     private NoteService noteService;
 
     @GetMapping
-    public List<Note> getAllNotes() {
-        return noteService.getAllNotes();
+    public List<NoteDTO> getAllNotes(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (userDetails == null) {
+            throw new RuntimeException("User not authenticated");
+        }
+        return noteService.getAllNotes()
+                            .stream()
+                            .map(NoteDTO::new)
+                            .toList();
     }
 
+
     @GetMapping("/{id}")
-    public ResponseEntity<Note> getNoteById(@PathVariable Long id) {
+    public ResponseEntity<?> getNoteById(@PathVariable Long id) {
         Optional<Note> note = noteService.getNoteById(id);
-        return note.map(ResponseEntity::ok)
+        return note.map(n -> ResponseEntity.ok(new NoteDTO(n)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+
     @PostMapping("/create")
-    public ResponseEntity<Note> createNote(@RequestBody Note note, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        // Get the authenticated user
-        User user = userDetails.getUser();
+    public ResponseEntity<?> createNote(@RequestBody Note note,
+                                        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(401).body("User not authenticated");
+        }
 
-        // Set the owner (authenticated user)
-        note.setOwner(user);
+        try {
+            User user = userDetails.getUser();
+            note.setOwner(user);
 
-        // Folder is optional, so no need to validate it
-        // If folder is provided, it will be set; otherwise, it will remain null
-        // Create the note
-        Note createdNote = noteService.createNote(note);
-        return ResponseEntity.ok(createdNote);
+            Note createdNote = noteService.createNote(note);
+
+            // Convert to DTO to avoid LazyInitializationException
+            NoteDTO responseDTO = new NoteDTO(createdNote);
+
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error creating note: " + e.getMessage());
+        }
     }
 
+
     @PutMapping("/{id}")
-    public ResponseEntity<Note> updateNote(@PathVariable Long id, @RequestBody Note updatedNote) {
+    public ResponseEntity<?> updateNote(@PathVariable Long id,
+                                        @RequestBody Note updatedNote,
+                                        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(401).body("User not authenticated");
+        }
+
         try {
-            Note note = noteService.updateNote(id, updatedNote);
-            return ResponseEntity.ok(note);
+            Note note = noteService.updateNote(id, updatedNote, userDetails.getUser());
+            return ResponseEntity.ok(new NoteDTO(note)); // ✅ Return DTO instead of entity
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNoteById(@PathVariable Long id) {
-        noteService.deleteNoteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deleteNoteById(@PathVariable Long id,
+                                            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(401).body("User not authenticated");
+        }
+
+        try {
+            noteService.deleteNoteById(id, userDetails.getUser());
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
     }
+
 }

@@ -300,52 +300,52 @@ function editNote(noteDiv) {
     });
 }
 
-// Search functionality
-searchInput.addEventListener('input', function () {
-    const searchTerm = searchInput.value.toLowerCase();
-    const notes = Array.from(notesContainer.querySelectorAll('.note'));
-    const matchingNotes = [];
-
-    notes.forEach(note => {
-        const title = note.querySelector('h3').innerText.toLowerCase();
-        const content = note.querySelector('.note-content').innerText.toLowerCase();
-
-        const isMatch = title.includes(searchTerm) || content.includes(searchTerm);
-
-        if (isMatch) {
-            matchingNotes.push(note);
-            note.style.display = 'block';
-        } else {
-            note.style.display = 'none';
-        }
-    });
-
-    // Sort notes: Matching notes first, then pinned notes, then others
-    notes.sort((a, b) => {
-        const aMatches = matchingNotes.includes(a);
-        const bMatches = matchingNotes.includes(b);
-        const aPinned = a.dataset.pinned === 'true';
-        const bPinned = b.dataset.pinned === 'true';
-
-        if (aMatches && !bMatches) return -1;  // a comes before b
-        if (!aMatches && bMatches) return 1;   // b comes before a
-        if (aPinned && !bPinned) return -1;    // Pinned a comes before non-pinned b
-        if (!aPinned && bPinned) return 1;     // Pinned b comes before non-pinned a
-        return 0;  // Maintain original order
-    });
-
-    // Re-append notes to the container to reflect the new order
-    notes.forEach(note => notesContainer.appendChild(note));
-
-    // Ensure pinned notes are on top within matching notes
-    arrangeNotes();
-
-    // If search term is empty, reset filter
-    if (searchTerm === '') {
-        filterNotesByFolder();
-        arrangeNotes();
-    }
-});
+// // Search functionality
+// searchInput.addEventListener('input', function () {
+//     const searchTerm = searchInput.value.toLowerCase();
+//     const notes = Array.from(notesContainer.querySelectorAll('.note'));
+//     const matchingNotes = [];
+//
+//     notes.forEach(note => {
+//         const title = note.querySelector('h3').innerText.toLowerCase();
+//         const content = note.querySelector('.note-content').innerText.toLowerCase();
+//
+//         const isMatch = title.includes(searchTerm) || content.includes(searchTerm);
+//
+//         if (isMatch) {
+//             matchingNotes.push(note);
+//             note.style.display = 'block';
+//         } else {
+//             note.style.display = 'none';
+//         }
+//     });
+//
+//     // Sort notes: Matching notes first, then pinned notes, then others
+//     notes.sort((a, b) => {
+//         const aMatches = matchingNotes.includes(a);
+//         const bMatches = matchingNotes.includes(b);
+//         const aPinned = a.dataset.pinned === 'true';
+//         const bPinned = b.dataset.pinned === 'true';
+//
+//         if (aMatches && !bMatches) return -1;  // a comes before b
+//         if (!aMatches && bMatches) return 1;   // b comes before a
+//         if (aPinned && !bPinned) return -1;    // Pinned a comes before non-pinned b
+//         if (!aPinned && bPinned) return 1;     // Pinned b comes before non-pinned a
+//         return 0;  // Maintain original order
+//     });
+//
+//     // Re-append notes to the container to reflect the new order
+//     notes.forEach(note => notesContainer.appendChild(note));
+//
+//     // Ensure pinned notes are on top within matching notes
+//     arrangeNotes();
+//
+//     // If search term is empty, reset filter
+//     if (searchTerm === '') {
+//         filterNotesByFolder();
+//         arrangeNotes();
+//     }
+// });
 // Extract token from URL
 const params = new URLSearchParams(window.location.search);
 const token = params.get("token");
@@ -372,27 +372,33 @@ function getAuthHeaders() {
     };
 }
 
-// Example of an API call with authentication
+//get
 async function fetchNotes() {
     try {
-        const response = await fetch("http://localhost:8080/api/notes", {
+        const response = await fetch("http://localhost:8080/api/notes", { // Update URL as needed
             method: "GET",
             headers: getAuthHeaders()
         });
 
-        if (response.status === 401) {
-            alert("Session expired. Please log in again.");
-            localStorage.removeItem("jwtToken");
-            window.location.href = "login.html";
-            return;
+        if (!response.ok) {
+            throw new Error("Failed to fetch notes");
         }
 
         const notes = await response.json();
-        console.log(notes);
+
+        if (notes.length > 0) {
+            notes.forEach(note => {
+                addNote(note.title, note.content, note.checkboxes, note.folder, note.isPinned);
+            });
+        } else {
+            notesContainer.innerHTML = "<p>No notes available</p>";
+        }
+
+        arrangeNotes(); // Ensure pinned notes appear first
     } catch (error) {
         console.error("Error fetching notes:", error);
     }
 }
 
-// Call fetchNotes when the page loads
+// Call fetchNotes() on page load
 window.addEventListener("load", fetchNotes);

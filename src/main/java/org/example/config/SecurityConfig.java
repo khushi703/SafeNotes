@@ -55,10 +55,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/notes/**").authenticated()
                         .anyRequest().authenticated()
                 )
-                .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessUrl("/api/auth/google-success", true)
-                        .successHandler(oAuth2SuccessHandler) // ✅ Now works correctly
-                )
+                .oauth2Login(oauth2 -> oauth2.disable()) // Disable OAuth2 login redirection
+
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
