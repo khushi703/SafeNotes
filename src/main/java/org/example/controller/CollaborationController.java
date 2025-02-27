@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.dto.CollaborationDTO;
 import org.example.entities.Collaboration;
 import org.example.service.CollaborationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,37 +14,49 @@ import java.util.List;
 public class CollaborationController {
     @Autowired
     private CollaborationService collaborationService;
-
     @PostMapping("/share")
-    public ResponseEntity<Collaboration> shareNoteOrFolder(@RequestBody Collaboration collaboration) {
-        return ResponseEntity.ok(collaborationService.addCollaboration(collaboration));
+    public ResponseEntity<CollaborationDTO> shareNoteOrFolder(@RequestBody CollaborationDTO collaborationDTO) {
+        Collaboration savedCollaboration = collaborationService.addCollaboration(collaborationDTO);
+        return ResponseEntity.ok(convertToDTO(savedCollaboration));
     }
 
     @GetMapping("/note/{noteId}")
-    public ResponseEntity<List<Collaboration>> getNoteCollaborations(@PathVariable Long noteId) {
-        return ResponseEntity.ok(collaborationService.getCollaboratorsByNote(noteId));
+    public ResponseEntity<List<CollaborationDTO>> getNoteCollaborations(@PathVariable Long noteId) {
+        List<Collaboration> collaborations = collaborationService.getCollaboratorsByNote(noteId);
+        return ResponseEntity.ok(collaborations.stream().map(this::convertToDTO).toList());
     }
 
     @GetMapping("/folder/{folderId}")
-    public ResponseEntity<List<Collaboration>> getFolderCollaborations(@PathVariable Long folderId) {
-        return ResponseEntity.ok(collaborationService.getCollaboratorsByFolder(folderId));
-    }
-
-    @DeleteMapping("/{collaborationId}")
-    public ResponseEntity<String> removeCollaboration(@PathVariable Long collaborationId) {
-        collaborationService.removeCollaboration(collaborationId);
-        return ResponseEntity.ok("Collaboration removed successfully");
+    public ResponseEntity<List<CollaborationDTO>> getFolderCollaborations(@PathVariable Long folderId) {
+        List<Collaboration> collaborations = collaborationService.getCollaboratorsByFolder(folderId);
+        return ResponseEntity.ok(collaborations.stream().map(this::convertToDTO).toList());
     }
 
     @PostMapping("/accept/{collaborationId}")
-    public ResponseEntity<Collaboration> acceptCollaboration(@PathVariable Long collaborationId) {
-        return ResponseEntity.ok(collaborationService.acceptCollaboration(collaborationId));
+    public ResponseEntity<CollaborationDTO> acceptCollaboration(@PathVariable Long collaborationId) {
+        Collaboration collaboration = collaborationService.acceptCollaboration(collaborationId);
+        return ResponseEntity.ok(convertToDTO(collaboration));
     }
 
     @PostMapping("/reject/{collaborationId}")
-    public ResponseEntity<Collaboration> rejectCollaboration(@PathVariable Long collaborationId) {
-        return ResponseEntity.ok(collaborationService.rejectCollaboration(collaborationId));
+    public ResponseEntity<CollaborationDTO> rejectCollaboration(@PathVariable Long collaborationId) {
+        Collaboration collaboration = collaborationService.rejectCollaboration(collaborationId);
+        return ResponseEntity.ok(convertToDTO(collaboration));
     }
+
+    private CollaborationDTO convertToDTO(Collaboration collaboration) {
+        return new CollaborationDTO(
+                collaboration.getCollaborationId(),
+                collaboration.getUser().getId(),
+                collaboration.getNote() != null ? collaboration.getNote().getId() : null,
+                collaboration.getFolder() != null ? collaboration.getFolder().getId() : null,
+                collaboration.getInvitedAt(),
+                collaboration.getStatus() == Collaboration.CollaborationStatus.ACCEPTED,
+                collaboration.getRole(),
+                collaboration.getStatus()
+        );
+    }
+
 
     @GetMapping("/note-permission/{userId}/{noteId}/{role}")
     public ResponseEntity<Boolean> hasNotePermission(

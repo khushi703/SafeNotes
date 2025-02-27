@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.dto.CollaborationDTO;
 import org.example.entities.Collaboration;
 import org.example.entities.Folder;
 import org.example.entities.Note;
@@ -23,29 +24,33 @@ public class CollaborationService {
     private NoteRepository noteRepository;  // Ensure NoteRepository exists
     @Autowired
     private FolderRepository folderRepository;
-    public Collaboration addCollaboration(Collaboration collaboration) {
-        if (collaboration.getNote() != null && collaboration.getFolder() != null) {
-            throw new IllegalArgumentException("Collaboration must be for either a note or a folder, not both.");
-        }
+    public Collaboration addCollaboration(CollaborationDTO collaborationDTO) {
+        Collaboration collaboration = new Collaboration();
 
-        if (collaboration.getNote() != null) {
-            Note note = noteRepository.findById(collaboration.getNote().getId())
+        collaboration.setCollaborationId(collaborationDTO.getCollaborationId());
+        collaboration.setRole(collaborationDTO.getRole());
+        collaboration.setStatus(collaborationDTO.getStatus());
+        collaboration.setInvitedAt(collaborationDTO.getInvitedAt());
+
+        User user = userRepository.findById(collaborationDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        collaboration.setUser(user);
+
+        if (collaborationDTO.getNoteId() != null) {
+            Note note = noteRepository.findById(collaborationDTO.getNoteId())
                     .orElseThrow(() -> new RuntimeException("Note not found"));
             collaboration.setNote(note);
         }
 
-        if (collaboration.getFolder() != null) {
-            Folder folder = folderRepository.findById(collaboration.getFolder().getId())
+        if (collaborationDTO.getFolderId() != null) {
+            Folder folder = folderRepository.findById(collaborationDTO.getFolderId())
                     .orElseThrow(() -> new RuntimeException("Folder not found"));
             collaboration.setFolder(folder);
         }
 
-        User user = userRepository.findById(collaboration.getUser().getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        collaboration.setUser(user);
-
         return collaborationRepository.save(collaboration);
     }
+
 
     public List<Collaboration> getCollaboratorsByNote(Long noteId) {
         return collaborationRepository.findByNoteId(noteId);
