@@ -20,15 +20,18 @@ public class NoteController {
     private NoteService noteService;
 
     @GetMapping
-    public List<NoteDTO> getAllNotes(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public List<NoteDTO> getUserNotes(@AuthenticationPrincipal CustomUserDetails userDetails) {
         if (userDetails == null) {
             throw new RuntimeException("User not authenticated");
         }
-        return noteService.getAllNotes()
-                            .stream()
-                            .map(NoteDTO::new)
-                            .toList();
+
+        // Fetch only notes belonging to the logged-in user
+        return noteService.getNotesByOwner(userDetails.getUser())
+                .stream()
+                .map(NoteDTO::new)
+                .toList();
     }
+
 
 
     @GetMapping("/{id}")

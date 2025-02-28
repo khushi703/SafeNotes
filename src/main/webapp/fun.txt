@@ -1,0 +1,48 @@
+const searchInput = document.getElementById('searchInput'); // Get the search input element
+
+// // Search functionality
+// searchInput.addEventListener('input', function () {
+//     const searchTerm = searchInput.value.toLowerCase();
+//     const notes = Array.from(notesContainer.querySelectorAll('.note'));
+//     const matchingNotes = [];
+//
+//     notes.forEach(note => {
+//         const title = note.querySelector('h3').innerText.toLowerCase();
+//         const content = note.querySelector('.note-content').innerText.toLowerCase();
+//
+//         const isMatch = title.includes(searchTerm) || content.includes(searchTerm);
+//
+//         if (isMatch) {
+//             matchingNotes.push(note);
+//             note.style.display = 'block';
+//         } else {
+//             note.style.display = 'none';
+//         }
+//     });
+//
+//     // Sort notes: Matching notes first, then pinned notes, then others
+//     notes.sort((a, b) => {
+//         const aMatches = matchingNotes.includes(a);
+//         const bMatches = matchingNotes.includes(b);
+//         const aPinned = a.dataset.pinned === 'true';
+//         const bPinned = b.dataset.pinned === 'true';
+//
+//         if (aMatches && !bMatches) return -1;  // a comes before b
+//         if (!aMatches && bMatches) return 1;   // b comes before a
+//         if (aPinned && !bPinned) return -1;    // Pinned a comes before non-pinned b
+//         if (!aPinned && bPinned) return 1;     // Pinned b comes before non-pinned a
+//         return 0;  // Maintain original order
+//     });
+//
+//     // Re-append notes to the container to reflect the new order
+//     notes.forEach(note => notesContainer.appendChild(note));
+//
+//     // Ensure pinned notes are on top within matching notes
+//     arrangeNotes();
+//
+//     // If search term is empty, reset filter
+//     if (searchTerm === '') {
+//         filterNotesByFolder();
+//         arrangeNotes();
+//     }
+// });

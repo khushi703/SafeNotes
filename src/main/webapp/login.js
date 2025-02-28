@@ -1,51 +1,35 @@
 document.addEventListener("DOMContentLoaded", function () {
     const loginForm = document.querySelector("form");
-    const googleLoginButton = document.querySelector(".wordpress-login-button");
 
-    // ✅ Handle JWT-based login
-    loginForm.addEventListener("submit", function (event) {
+    if (!loginForm) {
+        console.error("Login form not found!");
+        return;
+    }
+
+    loginForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        // Get input values
-        const username = document.querySelector("#username").value;
-        const password = document.querySelector("#password").value;
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
 
-        // Prepare login data
-        const loginData = {
-            username: username,
-            password: password
-        };
-
-        // Send POST request for authentication
-        fetch("http://localhost:8080/api/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(loginData)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Login failed. Please check your credentials.");
-                }
-                return response.json();
-            })
-            .then(data => {
-                // ✅ Store JWT token in localStorage
-                localStorage.setItem("jwtToken", data.token);
-
-                // ✅ Redirect to home/dashboard page
-                alert("Login successful! Redirecting...");
-                window.location.href = "home.html";  // Change to your actual dashboard/home page
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                alert(error.message);
+        try {
+            const response = await fetch("http://localhost:8080/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
             });
-    });
 
-    // ✅ Handle Google OAuth Login
-    googleLoginButton.addEventListener("click", function () {
-        window.location.href = "http://localhost:8080/oauth2/authorize/google";
+            if (response.ok) {
+                const data = await response.json();
+
+                localStorage.setItem("authToken", data.token); // ✅ Store Token Correctly
+                window.location.href = "home.html"; // ✅ Redirect to Home Page
+            } else {
+                alert("Login failed. Please check your credentials.");
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            alert("An error occurred. Please try again.");
+        }
     });
 });
